@@ -1,0 +1,684 @@
+([('MSVCP140.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\MSVCP140.dll',
+   'BINARY'),
+  ('MSVCP140_1.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\MSVCP140_1.dll',
+   'BINARY'),
+  ('MSVCP140_2.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\MSVCP140_2.dll',
+   'BINARY'),
+  ('Portal.exe',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\build\\portal\\Portal.exe',
+   'EXECUTABLE'),
+  ('PyQt6\\Qt6\\bin\\opengl32sw.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\opengl32sw.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\generic\\qtuiotouchplugin.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\generic\\qtuiotouchplugin.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\iconengines\\qsvgicon.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\iconengines\\qsvgicon.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qgif.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qgif.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qicns.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qicns.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qico.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qico.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qjpeg.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qjpeg.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qpdf.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qpdf.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qsvg.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qsvg.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qtga.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qtga.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qtiff.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qtiff.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qwbmp.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qwbmp.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\imageformats\\qwebp.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\imageformats\\qwebp.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\platforms\\qminimal.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\platforms\\qminimal.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\platforms\\qoffscreen.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\platforms\\qoffscreen.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\platforms\\qwindows.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\platforms\\qwindows.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\plugins\\styles\\qmodernwindowsstyle.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\plugins\\styles\\qmodernwindowsstyle.dll',
+   'BINARY'),
+  ('PyQt6\\Qt6\\translations\\qt_ar.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_ar.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_bg.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_bg.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_ca.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_ca.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_cs.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_cs.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_da.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_da.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_de.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_de.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_en.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_en.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_es.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_es.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_fa.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_fa.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_fi.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_fi.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_fr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_fr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_gd.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_gd.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_gl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_gl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_he.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_he.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_ar.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_ar.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_bg.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_bg.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_ca.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_ca.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_cs.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_cs.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_da.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_da.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_de.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_de.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_en.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_en.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_es.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_es.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_fr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_fr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_gl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_gl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_hr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_hr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_hu.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_hu.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_it.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_it.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_ja.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_ja.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_ka.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_ka.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_ko.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_ko.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_nl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_nl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_nn.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_nn.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_pl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_pl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_pt_BR.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_pt_BR.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_ru.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_ru.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_sk.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_sk.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_sl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_sl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_sv.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_sv.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_tr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_tr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_uk.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_uk.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_zh_CN.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_zh_CN.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_help_zh_TW.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_help_zh_TW.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_hr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_hr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_hu.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_hu.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_it.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_it.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_ja.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_ja.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_ka.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_ka.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_ko.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_ko.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_lg.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_lg.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_lt.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_lt.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_lv.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_lv.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_nl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_nl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_nn.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_nn.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_pl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_pl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_pt_BR.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_pt_BR.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_pt_PT.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_pt_PT.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_ru.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_ru.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_sk.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_sk.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_sl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_sl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_sv.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_sv.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_tr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_tr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_uk.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_uk.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_zh_CN.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_zh_CN.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qt_zh_TW.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qt_zh_TW.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_ar.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_ar.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_bg.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_bg.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_ca.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_ca.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_cs.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_cs.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_da.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_da.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_de.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_de.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_en.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_en.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_es.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_es.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_fa.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_fa.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_fi.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_fi.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_fr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_fr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_gd.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_gd.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_he.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_he.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_hr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_hr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_hu.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_hu.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_it.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_it.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_ja.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_ja.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_ka.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_ka.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_ko.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_ko.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_lg.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_lg.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_lv.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_lv.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_nl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_nl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_nn.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_nn.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_pl.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_pl.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_pt_BR.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_pt_BR.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_ru.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_ru.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_sk.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_sk.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_sv.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_sv.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_tr.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_tr.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_uk.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_uk.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_zh_CN.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_zh_CN.qm',
+   'DATA'),
+  ('PyQt6\\Qt6\\translations\\qtbase_zh_TW.qm',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\translations\\qtbase_zh_TW.qm',
+   'DATA'),
+  ('PyQt6\\QtCore.pyd',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\QtCore.pyd',
+   'EXTENSION'),
+  ('PyQt6\\QtGui.pyd',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\QtGui.pyd',
+   'EXTENSION'),
+  ('PyQt6\\QtWidgets.pyd',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\QtWidgets.pyd',
+   'EXTENSION'),
+  ('PyQt6\\sip.cp311-win_amd64.pyd',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\sip.cp311-win_amd64.pyd',
+   'EXTENSION'),
+  ('Qt6Core.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\Qt6Core.dll',
+   'BINARY'),
+  ('Qt6Gui.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\Qt6Gui.dll',
+   'BINARY'),
+  ('Qt6Network.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\Qt6Network.dll',
+   'BINARY'),
+  ('Qt6Pdf.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\Qt6Pdf.dll',
+   'BINARY'),
+  ('Qt6Svg.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\Qt6Svg.dll',
+   'BINARY'),
+  ('Qt6Widgets.dll',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\vendor\\python\\py311\\PyQt6\\Qt6\\bin\\Qt6Widgets.dll',
+   'BINARY'),
+  ('VCRUNTIME140.dll', 'C:\\Python311\\VCRUNTIME140.dll', 'BINARY'),
+  ('VCRUNTIME140_1.dll', 'C:\\Python311\\VCRUNTIME140_1.dll', 'BINARY'),
+  ('_bz2.pyd', 'C:\\Python311\\DLLs\\_bz2.pyd', 'EXTENSION'),
+  ('_decimal.pyd', 'C:\\Python311\\DLLs\\_decimal.pyd', 'EXTENSION'),
+  ('_hashlib.pyd', 'C:\\Python311\\DLLs\\_hashlib.pyd', 'EXTENSION'),
+  ('_lzma.pyd', 'C:\\Python311\\DLLs\\_lzma.pyd', 'EXTENSION'),
+  ('_socket.pyd', 'C:\\Python311\\DLLs\\_socket.pyd', 'EXTENSION'),
+  ('base_library.zip',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\build\\portal\\base_library.zip',
+   'DATA'),
+  ('bridge_core\\__init__.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__init__.py',
+   'DATA'),
+  ('bridge_core\\__pycache__\\__init__.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\__init__.cpython-310.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\__init__.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\__init__.cpython-311.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\dependencies.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\dependencies.cpython-311.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\host_base.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\host_base.cpython-310.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\host_base.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\host_base.cpython-311.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\manifest.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\manifest.cpython-310.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\manifest.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\manifest.cpython-311.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\naming.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\naming.cpython-310.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\naming.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\naming.cpython-311.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\settings.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\settings.cpython-310.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\settings.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\settings.cpython-311.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\state.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\state.cpython-310.pyc',
+   'DATA'),
+  ('bridge_core\\__pycache__\\state.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\__pycache__\\state.cpython-311.pyc',
+   'DATA'),
+  ('bridge_core\\dependencies.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\dependencies.py',
+   'DATA'),
+  ('bridge_core\\host_base.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\host_base.py',
+   'DATA'),
+  ('bridge_core\\logging_utils.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\logging_utils.py',
+   'DATA'),
+  ('bridge_core\\manifest.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\manifest.py',
+   'DATA'),
+  ('bridge_core\\naming.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\naming.py',
+   'DATA'),
+  ('bridge_core\\settings.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\settings.py',
+   'DATA'),
+  ('bridge_core\\state.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\bridge_core\\state.py',
+   'DATA'),
+  ('hosts\\__init__.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\__init__.py',
+   'DATA'),
+  ('hosts\\__pycache__\\__init__.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\__pycache__\\__init__.cpython-310.pyc',
+   'DATA'),
+  ('hosts\\__pycache__\\__init__.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\__pycache__\\__init__.cpython-311.pyc',
+   'DATA'),
+  ('hosts\\__pycache__\\blender_bridge.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\__pycache__\\blender_bridge.cpython-311.pyc',
+   'DATA'),
+  ('hosts\\__pycache__\\maya_bridge.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\__pycache__\\maya_bridge.cpython-310.pyc',
+   'DATA'),
+  ('hosts\\__pycache__\\maya_bridge.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\__pycache__\\maya_bridge.cpython-311.pyc',
+   'DATA'),
+  ('hosts\\blender_bridge.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\blender_bridge.py',
+   'DATA'),
+  ('hosts\\maya_bridge.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\hosts\\maya_bridge.py',
+   'DATA'),
+  ('icons\\blender_icon.png',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\icons\\blender_icon.png',
+   'DATA'),
+  ('icons\\maya_logo.png',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\icons\\maya_logo.png',
+   'DATA'),
+  ('icons\\portal.ico',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\icons\\portal.ico',
+   'DATA'),
+  ('icons\\portal.png',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\icons\\portal.png',
+   'DATA'),
+  ('libcrypto-1_1.dll', 'C:\\Python311\\DLLs\\libcrypto-1_1.dll', 'BINARY'),
+  ('portal_dcc\\__init__.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\portal_dcc\\__init__.py',
+   'DATA'),
+  ('portal_dcc\\__pycache__\\__init__.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\portal_dcc\\__pycache__\\__init__.cpython-310.pyc',
+   'DATA'),
+  ('portal_dcc\\__pycache__\\__init__.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\portal_dcc\\__pycache__\\__init__.cpython-311.pyc',
+   'DATA'),
+  ('portal_dcc\\__pycache__\\blender_server.cpython-311.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\portal_dcc\\__pycache__\\blender_server.cpython-311.pyc',
+   'DATA'),
+  ('portal_dcc\\__pycache__\\maya_server.cpython-310.pyc',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\portal_dcc\\__pycache__\\maya_server.cpython-310.pyc',
+   'DATA'),
+  ('portal_dcc\\blender_server.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\portal_dcc\\blender_server.py',
+   'DATA'),
+  ('portal_dcc\\maya_server.py',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\portal_dcc\\maya_server.py',
+   'DATA'),
+  ('python3.dll', 'C:\\Python311\\python3.dll', 'BINARY'),
+  ('python311.dll', 'C:\\Python311\\python311.dll', 'BINARY'),
+  ('select.pyd', 'C:\\Python311\\DLLs\\select.pyd', 'EXTENSION'),
+  ('unicodedata.pyd', 'C:\\Python311\\DLLs\\unicodedata.pyd', 'EXTENSION')],)
