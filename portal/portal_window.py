@@ -555,8 +555,8 @@ class PortalWindow(QtWidgets.QMainWindow):
         scripts_box = self._card("Startup Scripts")
         scripts_layout = scripts_box.layout()
         
-        copy_m = self._button("Copy Maya Server Script", self.copy_maya_bootstrap)
-        copy_b = self._button("Copy Blender Server Script", self.copy_blender_bootstrap)
+        copy_m = self._button("For Maya", self.copy_maya_bootstrap)
+        copy_b = self._button("For Blender", self.copy_blender_bootstrap)
         
         scripts_row = QtWidgets.QHBoxLayout()
         scripts_row.setSpacing(8)
