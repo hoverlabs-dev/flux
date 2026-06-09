@@ -32,24 +32,86 @@ class BlenderBridgeHost(BridgeHost):
             settings.fbx_path = transfer_path(settings, objects[0].name, self.host_name)
 
         manifest = self.collect_manifest(settings)
-        bpy.ops.export_scene.fbx(
-            filepath=str(settings.fbx_path),
-            use_selection=settings.selected_only,
-            object_types={"MESH", "EMPTY", "ARMATURE"},
-            use_custom_props=False,  # Set to False to prevent Blender crashes on complex/unregistered ID properties
-            bake_space_transform=False,
-            apply_unit_scale=settings.apply_unit_scale,
-            apply_scale_options="FBX_SCALE_UNITS",
-            axis_forward=settings.axis_forward,
-            axis_up=settings.axis_up,
-            mesh_smooth_type="FACE" if settings.preserve_smoothing else "OFF",
-            use_mesh_modifiers=True,
-            use_mesh_edges=True,
-            use_tspace=True,
-            add_leaf_bones=False,
-            path_mode="COPY" if settings.embed_textures else "AUTO",
-            embed_textures=settings.embed_textures,
-        )
+
+        if settings.freeze_transforms:
+            duplicates = []
+            orig_to_dup = {}
+            # Deselect all first
+            bpy.ops.object.select_all(action="DESELECT")
+            
+            for obj in objects:
+                # Duplicate the object
+                dup = obj.copy()
+                dup.data = obj.data.copy()
+                bpy.context.scene.collection.objects.link(dup)
+                duplicates.append(dup)
+                orig_to_dup[obj] = dup
+                
+                # Make the duplicate active and select it to apply transforms
+                bpy.context.view_layer.objects.active = dup
+                dup.select_set(True)
+                
+                # Apply translation, rotation, scale
+                bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+                
+                # Deselect
+                dup.select_set(False)
+                
+            # Select all duplicates for export
+            for dup in duplicates:
+                dup.select_set(True)
+            if duplicates:
+                bpy.context.view_layer.objects.active = duplicates[0]
+                
+            # Export duplicates
+            bpy.ops.export_scene.fbx(
+                filepath=str(settings.fbx_path),
+                use_selection=True,  # Force selection only for duplicates
+                object_types={"MESH", "EMPTY", "ARMATURE"},
+                use_custom_props=False,
+                bake_space_transform=True,
+                apply_unit_scale=settings.apply_unit_scale,
+                apply_scale_options="FBX_SCALE_UNITS",
+                axis_forward=settings.axis_forward,
+                axis_up=settings.axis_up,
+                mesh_smooth_type="FACE" if settings.preserve_smoothing else "OFF",
+                use_mesh_modifiers=True,
+                use_mesh_edges=True,
+                use_tspace=True,
+                add_leaf_bones=False,
+                path_mode="COPY" if settings.embed_textures else "AUTO",
+                embed_textures=settings.embed_textures,
+            )
+            
+            # Delete duplicates
+            bpy.ops.object.delete()
+            
+            # Restore selection to original objects
+            bpy.ops.object.select_all(action="DESELECT")
+            for obj in objects:
+                obj.select_set(True)
+            if objects:
+                bpy.context.view_layer.objects.active = objects[0]
+        else:
+            bpy.ops.export_scene.fbx(
+                filepath=str(settings.fbx_path),
+                use_selection=settings.selected_only,
+                object_types={"MESH", "EMPTY", "ARMATURE"},
+                use_custom_props=False,
+                bake_space_transform=True,
+                apply_unit_scale=settings.apply_unit_scale,
+                apply_scale_options="FBX_SCALE_UNITS",
+                axis_forward=settings.axis_forward,
+                axis_up=settings.axis_up,
+                mesh_smooth_type="FACE" if settings.preserve_smoothing else "OFF",
+                use_mesh_modifiers=True,
+                use_mesh_edges=True,
+                use_tspace=True,
+                add_leaf_bones=False,
+                path_mode="COPY" if settings.embed_textures else "AUTO",
+                embed_textures=settings.embed_textures,
+            )
+            
         manifest.write(settings.manifest_path)
         write_latest(settings, self.host_name, objects[0].name if objects else "selection")
         return manifest
@@ -67,7 +129,7 @@ class BlenderBridgeHost(BridgeHost):
             use_custom_props=False,  # Custom properties are restored via the manifest sidecar
             use_custom_normals=settings.preserve_smoothing,
             use_image_search=True,
-            bake_space_transform=False,
+            bake_space_transform=True,
             axis_forward=settings.axis_forward,
             axis_up=settings.axis_up,
         )
@@ -101,6 +163,24 @@ class BlenderBridgeHost(BridgeHost):
 
         if manifest:
             self.apply_manifest(manifest, settings)
+
+        if manifest and settings.preserve_pivots:
+            try:
+                area = next((a for a in bpy.context.screen.areas if a.type == 'VIEW_3D'), None)
+                region = next((r for r in area.regions if r.type == 'WINDOW'), None)
+                if area and region:
+                    override = bpy.context.temp_override(area=area, region=region)
+                    with override:
+                        bpy.ops.object.transforms_to_deltas(mode='ALL')
+                else:
+                    bpy.ops.object.transforms_to_deltas(mode='ALL')
+            except Exception:
+                for obj in bpy.context.selected_objects:
+                    if obj.type == "MESH":
+                        try:
+                            self._apply_transforms_to_deltas_python(obj)
+                        except Exception:
+                            pass
         return manifest
 
     def _update_existing_meshes(
@@ -133,6 +213,7 @@ class BlenderBridgeHost(BridgeHost):
                 continue
 
             self._force_material_link_to_data(target)
+            self._reset_delta_transforms(target)
             target.matrix_world = imported_obj.matrix_world
             old_mesh = target.data
             blender_materials = list(target.data.materials)
@@ -219,6 +300,7 @@ class BlenderBridgeHost(BridgeHost):
                 continue
             if settings.sync_transforms and Matrix and record.matrix_world and len(record.matrix_world) == 16:
                 try:
+                    self._reset_delta_transforms(obj)
                     if manifest.source_host == "maya":
                         M_maya = Matrix([record.matrix_world[i:i+4] for i in range(0, 16, 4)])
                         M_maya_t = M_maya.transposed()
@@ -538,11 +620,45 @@ class BlenderBridgeHost(BridgeHost):
                 seam_attribute.data[edge.index].value = is_seam
         obj.data.update()
 
+    def _reset_delta_transforms(self, obj) -> None:
+        from mathutils import Vector
+        obj.delta_location = Vector((0.0, 0.0, 0.0))
+        if hasattr(obj, "delta_rotation_euler"):
+            obj.delta_rotation_euler = Vector((0.0, 0.0, 0.0))
+        if hasattr(obj, "delta_rotation_quaternion"):
+            from mathutils import Quaternion
+            obj.delta_rotation_quaternion = Quaternion((1.0, 0.0, 0.0, 0.0))
+        if hasattr(obj, "delta_rotation_axis_angle"):
+            obj.delta_rotation_axis_angle = (0.0, 0.0, 1.0, 0.0)
+        obj.delta_scale = Vector((1.0, 1.0, 1.0))
+
+    def _apply_transforms_to_deltas_python(self, obj) -> None:
+        from mathutils import Vector, Quaternion
+        obj.delta_location = obj.location.copy()
+        obj.location = Vector((0.0, 0.0, 0.0))
+        
+        obj.delta_scale = obj.scale.copy()
+        obj.scale = Vector((1.0, 1.0, 1.0))
+        
+        if obj.rotation_mode == 'QUATERNION':
+            obj.delta_rotation_quaternion = obj.rotation_quaternion.copy()
+            obj.rotation_quaternion = Quaternion((1.0, 0.0, 0.0, 0.0))
+        elif obj.rotation_mode == 'AXIS_ANGLE':
+            obj.delta_rotation_axis_angle = list(obj.rotation_axis_angle)
+            obj.rotation_axis_angle = (0.0, 0.0, 1.0, 0.0)
+        else:
+            obj.delta_rotation_euler = obj.rotation_euler.copy()
+            obj.rotation_euler = Vector((0.0, 0.0, 0.0))
+
     def _set_object_pivot(self, obj, pivot_world: list[float]) -> None:
         if obj.type != "MESH" or not pivot_world or len(pivot_world) != 3:
             return
         from mathutils import Vector
         P = Vector(pivot_world)
+        
+        # Reset delta transforms to default first, so that we work with clean matrices/transforms
+        self._reset_delta_transforms(obj)
+
         W = obj.matrix_world.copy()
         W_new = W.copy()
         W_new.translation = P
@@ -560,6 +676,13 @@ class BlenderBridgeHost(BridgeHost):
         obj.matrix_world = W_new
         obj.data.update()
         
+        # Convert all transforms to deltas to keep transforms in 0,0,0
+        try:
+            self._apply_transforms_to_deltas_python(obj)
+        except Exception:
+            obj.delta_location = obj.location.copy()
+            obj.location = Vector((0.0, 0.0, 0.0))
+
         # Restore children matrices
         for child, matrix in children_matrices:
             child.matrix_world = matrix

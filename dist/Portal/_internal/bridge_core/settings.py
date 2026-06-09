@@ -39,6 +39,7 @@ class BridgeSettings:
     sync_transforms: bool = False
     axis_forward: str = "-Z"
     axis_up: str = "Y"
+    freeze_transforms: bool = True
 
     @property
     def manifest_path(self) -> Path:

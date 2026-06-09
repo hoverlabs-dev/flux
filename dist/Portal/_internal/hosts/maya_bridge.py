@@ -49,23 +49,144 @@ class MayaBridgeHost(BridgeHost):
             settings.fbx_path = transfer_path(settings, active_name, self.host_name)
             
         self._load_fbx_plugin()
-        manifest = self.collect_manifest(settings)
         self._configure_fbx_export(settings)
         
         fbx_path = settings.fbx_path.as_posix()
-        if settings.selected_only:
-            # Temporarily re-select only valid mesh transforms to guarantee Maya MEL FBXExport -s has zero errors
-            cmds.select(mesh_transforms, replace=True)
-            mel.eval(f'FBXExport -f "{fbx_path}" -s')
-            # Restore user selection list
-            if selection:
-                cmds.select(selection, replace=True)
-        else:
-            mel.eval(f'FBXExport -f "{fbx_path}"')
+        
+        # Collect manifest on original nodes first to preserve their original custom pivots, transforms, and attributes
+        manifest = self.collect_manifest(settings)
+
+        if settings.freeze_transforms:
+            nodes_to_process = mesh_transforms if settings.selected_only else []
+            if not settings.selected_only:
+                all_transforms = cmds.ls(long=True, type="transform") or []
+                nodes_to_process = [node for node in all_transforms if self._has_mesh_shape(node)]
+                
+            if not nodes_to_process:
+                # Fallback if no meshes to freeze
+                mel.eval(f'FBXExport -f "{fbx_path}"')
+                manifest.write(settings.manifest_path)
+                write_latest(settings, self.host_name, active_name)
+                return manifest
+                
+            duplicates = []
+            orig_to_dup = {}
+            dup_to_orig_info = {}
             
-        manifest.write(settings.manifest_path)
-        write_latest(settings, self.host_name, active_name)
-        return manifest
+            for node in nodes_to_process:
+                try:
+                    dup = cmds.duplicate(node, renameChildren=True)[0]
+                    
+                    child_transforms = cmds.listRelatives(dup, children=True, type="transform", fullPath=True) or []
+                    for child_t in child_transforms:
+                        try:
+                            cmds.delete(child_t)
+                        except Exception:
+                            pass
+                            
+                    parent_rel = cmds.listRelatives(dup, parent=True, fullPath=True)
+                    if parent_rel:
+                        dup = cmds.parent(dup, world=True)[0]
+                        
+                    cmds.xform(dup, zeroTransformPivots=True)
+                    cmds.makeIdentity(dup, apply=True, t=True, r=True, s=True, n=0)
+                    
+                    try:
+                        cmds.bakePartialHistory(dup, preDeformers=True)
+                    except Exception:
+                        try:
+                            cmds.delete(dup, ch=True)
+                        except Exception:
+                            pass
+                            
+                    duplicates.append(dup)
+                    orig_to_dup[node] = dup
+                except Exception as e:
+                    for d in duplicates:
+                        try:
+                            if cmds.objExists(d):
+                                cmds.delete(d)
+                        except Exception:
+                            pass
+                    raise RuntimeError(f"Failed to prepare freeze-transform duplicate for {node}: {e}")
+                    
+            duplicates_to_delete = list(duplicates)
+            renamed_originals = []
+            
+            try:
+                for orig_node, dup_node in orig_to_dup.items():
+                    leaf_name = orig_node.split("|")[-1]
+                    temp_name = leaf_name + "_tmp_portal_rename"
+                    
+                    orig_new_path = orig_node
+                    try:
+                        orig_new_path = cmds.rename(orig_node, temp_name)
+                        renamed_originals.append((orig_new_path, leaf_name))
+                    except Exception:
+                        pass
+                        
+                    dup_target_name = leaf_name
+                    try:
+                        idx = duplicates_to_delete.index(dup_node)
+                        dup_node = cmds.rename(dup_node, dup_target_name)
+                        duplicates_to_delete[idx] = dup_node
+                        dup_short = self._short_name(dup_node)
+                    except Exception:
+                        dup_short = self._short_name(dup_node)
+                        
+                    dup_to_orig_info[dup_short] = (self._short_name(orig_node), orig_node)
+                    
+                cmds.select(duplicates_to_delete, replace=True)
+                mel.eval(f'FBXExport -f "{fbx_path}" -s')
+                
+            finally:
+                for d in duplicates_to_delete:
+                    try:
+                        if cmds.objExists(d):
+                            cmds.delete(d)
+                    except Exception:
+                        pass
+                        
+                for orig_new_path, leaf_name in reversed(renamed_originals):
+                    try:
+                        if cmds.objExists(orig_new_path):
+                            cmds.rename(orig_new_path, leaf_name)
+                    except Exception:
+                        pass
+                        
+                if selection:
+                    try:
+                        cmds.select(selection, replace=True)
+                    except Exception:
+                        pass
+                        
+            manifest.write(settings.manifest_path)
+            write_latest(settings, self.host_name, active_name)
+            return manifest
+        else:
+            # Delete modeling/normal construction history to clean normal history before export
+            for node in mesh_transforms:
+                try:
+                    cmds.bakePartialHistory(node, preDeformers=True)
+                except Exception:
+                    try:
+                        cmds.delete(node, ch=True)
+                    except Exception:
+                        pass
+            
+            if settings.selected_only:
+                # Temporarily re-select only valid mesh transforms to guarantee Maya MEL FBXExport -s has zero errors
+                cmds.select(mesh_transforms, replace=True)
+                mel.eval(f'FBXExport -f "{fbx_path}" -s')
+                # Restore user selection list
+                if selection:
+                    cmds.select(selection, replace=True)
+            else:
+                mel.eval(f'FBXExport -f "{fbx_path}"')
+                
+            manifest.write(settings.manifest_path)
+            write_latest(settings, self.host_name, active_name)
+            return manifest
 
     def import_fbx(self, settings: BridgeSettings) -> BridgeManifest | None:
         self._require_maya()
@@ -140,14 +261,18 @@ class MayaBridgeHost(BridgeHost):
             if settings.sync_transforms and record.matrix_world:
                 mat_data = list(record.matrix_world)
                 if len(mat_data) == 16:
-                    mat_data[12] *= scale_factor
-                    mat_data[13] *= scale_factor
-                    mat_data[14] *= scale_factor
+                    if manifest.source_host == "blender":
+                        mat_data = self._blender_to_maya_matrix(mat_data)
+                    else:
+                        mat_data[12] *= scale_factor
+                        mat_data[13] *= scale_factor
+                        mat_data[14] *= scale_factor
+                    mat_data = self._clean_matrix(mat_data)
                 cmds.xform(transform, worldSpace=True, matrix=mat_data)
-            if settings.sync_transforms and settings.preserve_pivots and record.rotate_pivot:
+            if settings.preserve_pivots and record.rotate_pivot:
                 scaled_pivot = [val * scale_factor for val in record.rotate_pivot]
                 cmds.xform(transform, worldSpace=True, rotatePivot=scaled_pivot)
-            if settings.sync_transforms and settings.preserve_pivots and record.scale_pivot:
+            if settings.preserve_pivots and record.scale_pivot:
                 scaled_pivot = [val * scale_factor for val in record.scale_pivot]
                 cmds.xform(transform, worldSpace=True, scalePivot=scaled_pivot)
             if settings.preserve_custom_properties:
@@ -167,7 +292,7 @@ class MayaBridgeHost(BridgeHost):
         self._try_mel("FBXResetExport")
         self._try_mel("FBXExportInAscii -v false")
         self._try_mel(f"FBXExportSmoothingGroups -v {str(settings.preserve_smoothing).lower()}")
-        self._try_mel("FBXExportHardEdges -v true")
+        self._try_mel("FBXExportHardEdges -v false")
         self._try_mel("FBXExportSplitPerVertexNormals -v false")
         self._try_mel("FBXExportTangents -v true")
         self._try_mel("FBXExportSmoothMesh -v true")
@@ -210,7 +335,7 @@ class MayaBridgeHost(BridgeHost):
             name=self._short_name(transform),
             host_name=transform,
             parent=self._short_name(parent) if parent else None,
-            matrix_world=list(cmds.xform(transform, query=True, worldSpace=True, matrix=True)),
+            matrix_world=self._clean_matrix(list(cmds.xform(transform, query=True, worldSpace=True, matrix=True))),
             rotate_pivot=list(cmds.xform(transform, query=True, worldSpace=True, rotatePivot=True)),
             scale_pivot=list(cmds.xform(transform, query=True, worldSpace=True, scalePivot=True)),
             material_slots=self._materials_for_transform(transform),
@@ -315,15 +440,13 @@ class MayaBridgeHost(BridgeHost):
         target_scale_pivot = cmds.xform(target, query=True, worldSpace=True, scalePivot=True)
 
         old_shapes = cmds.listRelatives(target, shapes=True, fullPath=True, type="mesh") or []
-        imported_shapes = cmds.listRelatives(imported_transform, shapes=True, fullPath=True, type="mesh") or []
         new_shapes = []
-        for shape in imported_shapes:
-            duplicated = cmds.duplicate(shape, renameChildren=True)[0]
-            shape_children = cmds.listRelatives(duplicated, shapes=True, fullPath=True, type="mesh") or []
-            for dup_shape in shape_children:
-                parented = cmds.parent(dup_shape, target, shape=True, relative=True)[0]
-                new_shapes.append(parented)
-            cmds.delete(duplicated)
+        duplicated_transform = cmds.duplicate(imported_transform, renameChildren=True)[0]
+        duplicated_shapes = cmds.listRelatives(duplicated_transform, shapes=True, fullPath=True, type="mesh") or []
+        for dup_shape in duplicated_shapes:
+            parented = cmds.parent(dup_shape, target, shape=True, relative=True)[0]
+            new_shapes.append(parented)
+        cmds.delete(duplicated_transform)
 
         if old_shapes:
             cmds.delete(old_shapes)
@@ -449,6 +572,44 @@ class MayaBridgeHost(BridgeHost):
                 cmds.polySoftEdge(edges_to_harden, angle=0, constructionHistory=False)
             except Exception:
                 pass
+
+    def _blender_to_maya_matrix(self, matrix_blender: list[float]) -> list[float]:
+        # Reconstruct as a 4x4 list of lists (row-major)
+        Mb = [matrix_blender[i:i+4] for i in range(0, 16, 4)]
+        
+        # Temp = Mb @ C
+        Temp = [[0.0]*4 for _ in range(4)]
+        for r in range(4):
+            Temp[r][0] = Mb[r][0] * 0.01
+            Temp[r][1] = Mb[r][2] * 0.01
+            Temp[r][2] = -Mb[r][1] * 0.01
+            Temp[r][3] = Mb[r][3]
+            
+        # M_maya_t = C_inv @ Temp
+        M_maya_t = [
+            [Temp[0][0] * 100.0, Temp[0][1] * 100.0, Temp[0][2] * 100.0, Temp[0][3] * 100.0],
+            [Temp[2][0] * 100.0, Temp[2][1] * 100.0, Temp[2][2] * 100.0, Temp[2][3] * 100.0],
+            [Temp[1][0] * -100.0, Temp[1][1] * -100.0, Temp[1][2] * -100.0, Temp[1][3] * -100.0],
+            [Temp[3][0], Temp[3][1], Temp[3][2], Temp[3][3]]
+        ]
+        
+        # Transpose M_maya_t to get Maya's row-vector layout
+        M_maya = []
+        for r in range(4):
+            for c in range(4):
+                M_maya.append(M_maya_t[c][r])
+                
+        return self._clean_matrix(M_maya)
+
+    def _clean_matrix(self, matrix: list[float]) -> list[float]:
+        cleaned = []
+        for val in matrix:
+            nearest_int = round(val)
+            if abs(val - nearest_int) < 1e-4:
+                cleaned.append(float(nearest_int))
+            else:
+                cleaned.append(round(val, 6))
+        return cleaned
 
     def _short_name(self, name: str | None) -> str:
         if not name:

@@ -633,6 +633,14 @@
    'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
    'workflow\\hosts\\maya_bridge.py',
    'DATA'),
+  ('icons\\Geist.ttf',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\icons\\Geist.ttf',
+   'DATA'),
+  ('icons\\GeistMono.ttf',
+   'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
+   'workflow\\icons\\GeistMono.ttf',
+   'DATA'),
   ('icons\\blender_icon.png',
    'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
    'workflow\\icons\\blender_icon.png',
@@ -641,13 +649,13 @@
    'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
    'workflow\\icons\\maya_logo.png',
    'DATA'),
-  ('icons\\portal.ico',
+  ('icons\\portal_logo.ico',
    'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
-   'workflow\\icons\\portal.ico',
+   'workflow\\icons\\portal_logo.ico',
    'DATA'),
-  ('icons\\portal.png',
+  ('icons\\portal_logo.png',
    'Z:\\Local_P4\\TA_Storage\\Jaisurya\\Maya Blender '
-   'workflow\\icons\\portal.png',
+   'workflow\\icons\\portal_logo.png',
    'DATA'),
   ('libcrypto-1_1.dll', 'C:\\Python311\\DLLs\\libcrypto-1_1.dll', 'BINARY'),
   ('portal_dcc\\__init__.py',

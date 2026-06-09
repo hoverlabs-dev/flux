@@ -22,12 +22,30 @@ class PortalWindow(QtWidgets.QMainWindow):
         self.config = PortalConfig.load()
         self.direction = "maya"
         self.setWindowTitle("Portal - Maya Blender Asset Bridge (FBX)")
-        self.resize(460, 780)
-        self.setMinimumSize(420, 680)
+        self.resize(380, 700)
+        self.setMinimumSize(360, 640)
+        
+        # Frameless rounded window settings
+        self.setWindowFlags(
+            QtCore.Qt.WindowType.FramelessWindowHint | 
+            QtCore.Qt.WindowType.Window | 
+            QtCore.Qt.WindowType.WindowStaysOnTopHint
+        )
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        
+        # Load custom bundled fonts
+        geist_path = PROJECT_ROOT / "icons" / "Geist.ttf"
+        if geist_path.exists():
+            QtGui.QFontDatabase.addApplicationFont(str(geist_path))
+            
+        geist_mono_path = PROJECT_ROOT / "icons" / "GeistMono.ttf"
+        if geist_mono_path.exists():
+            QtGui.QFontDatabase.addApplicationFont(str(geist_mono_path))
+            
         self.setStyleSheet(DARK_NEON_QSS)
         
         # Set gorgeous branded window icon
-        portal_icon_path = PROJECT_ROOT / "icons" / "portal.png"
+        portal_icon_path = PROJECT_ROOT / "icons" / "portal_logo.png"
         if portal_icon_path.exists():
             self.setWindowIcon(QtGui.QIcon(str(portal_icon_path)))
         else:
@@ -38,7 +56,17 @@ class PortalWindow(QtWidgets.QMainWindow):
         self._build_ui()
         self._load_config_to_ui()
 
-    def create_vector_icon(self, name: str, color_hex: str = "#38bdf8") -> QtGui.QIcon:
+    def mousePressEvent(self, event: QtGui.QMouseEvent) -> None:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
+            self._drag_pos = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
+            event.accept()
+
+    def mouseMoveEvent(self, event: QtGui.QMouseEvent) -> None:
+        if event.buttons() == QtCore.Qt.MouseButton.LeftButton:
+            self.move(event.globalPosition().toPoint() - self._drag_pos)
+            event.accept()
+
+    def create_vector_icon(self, name: str, color_hex: str = "#ffffff") -> QtGui.QIcon:
         """Dynamically draws or loads pixel-perfect high-resolution icons."""
         if name == "maya":
             icon_path = PROJECT_ROOT / "icons" / "maya_logo.png"
@@ -145,59 +173,97 @@ class PortalWindow(QtWidgets.QMainWindow):
         painter.end()
         return QtGui.QIcon(pixmap)
 
-    def apply_neon_glow(self, widget: QtWidgets.QWidget, color_hex: str = "#38bdf8", radius: int = 12) -> None:
-        """Applies hardware-accelerated, high-fidelity neon drop-shadow glow to widgets."""
-        effect = QtWidgets.QGraphicsDropShadowEffect(widget)
-        effect.setBlurRadius(radius)
-        effect.setXOffset(0)
-        effect.setYOffset(0)
-        effect.setColor(QtGui.QColor(color_hex))
-        widget.setGraphicsEffect(effect)
-
-    def _create_status_pill(self, label_text: str, status_text: str, is_active: bool = False) -> tuple[QtWidgets.QWidget, QtWidgets.QLabel, QtWidgets.QLabel]:
-        pill = QtWidgets.QWidget()
-        pill.setObjectName("StatusPill")
-        layout = QtWidgets.QHBoxLayout(pill)
-        layout.setContentsMargins(6, 2, 6, 2)
-        layout.setSpacing(4)
-        
-        dot = QtWidgets.QLabel()
-        dot.setFixedSize(8, 8)
-        self._set_dot_state(dot, is_active)
-        
-        lbl = QtWidgets.QLabel(label_text.upper() + ":")
-        lbl.setObjectName("StatusLabel")
-        
-        val = QtWidgets.QLabel(status_text)
-        val.setObjectName("StatusText")
-        
-        layout.addWidget(dot)
-        layout.addWidget(lbl)
-        layout.addWidget(val)
-        return pill, dot, val
-
     def _set_dot_state(self, dot: QtWidgets.QLabel, is_active: bool) -> None:
         if is_active:
-            dot.setStyleSheet("background-color: #10b981; border-radius: 4px; border: 1px solid #34d399;")
+            dot.setStyleSheet("background-color: #10b981; border-radius: 3px;")
         else:
-            dot.setStyleSheet("background-color: #64748b; border-radius: 4px; border: 1px solid #94a3b8;")
+            dot.setStyleSheet("background-color: #333333; border-radius: 3px;")
 
     def _build_ui(self) -> None:
         central = QtWidgets.QWidget()
         central.setObjectName("CentralWidget")
         self.setCentralWidget(central)
+        
         root = QtWidgets.QVBoxLayout(central)
-        root.setContentsMargins(18, 18, 18, 14)
+        root.setContentsMargins(18, 16, 18, 18)
         root.setSpacing(12)
 
-        # 1. High-Tech Header Navigation
+        # Title Bar (Frameless dragging area)
+        title_bar = QtWidgets.QWidget()
+        title_bar.setObjectName("TitleBar")
+        title_bar_layout = QtWidgets.QHBoxLayout(title_bar)
+        title_bar_layout.setContentsMargins(8, 0, 8, 0)
+        title_bar_layout.setSpacing(8)
+        
+        self.close_dot = QtWidgets.QPushButton()
+        self.close_dot.setFixedSize(12, 12)
+        self.close_dot.setObjectName("CloseDot")
+        self.close_dot.clicked.connect(self.close)
+        
+        close_glow = QtWidgets.QGraphicsDropShadowEffect(self.close_dot)
+        close_glow.setBlurRadius(8)
+        close_glow.setXOffset(0)
+        close_glow.setYOffset(0)
+        close_glow.setColor(QtGui.QColor("#ff5f56"))
+        self.close_dot.setGraphicsEffect(close_glow)
+        
+        self.min_dot = QtWidgets.QPushButton()
+        self.min_dot.setFixedSize(12, 12)
+        self.min_dot.setObjectName("MinDot")
+        self.min_dot.clicked.connect(self.showMinimized)
+        
+        min_glow = QtWidgets.QGraphicsDropShadowEffect(self.min_dot)
+        min_glow.setBlurRadius(8)
+        min_glow.setXOffset(0)
+        min_glow.setYOffset(0)
+        min_glow.setColor(QtGui.QColor("#ffbd2e"))
+        self.min_dot.setGraphicsEffect(min_glow)
+        
+        title_lbl = QtWidgets.QLabel("P O R T A L")
+        title_lbl.setObjectName("TitleBarTitle")
+        title_lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        
+        title_glow = QtWidgets.QGraphicsDropShadowEffect(title_lbl)
+        title_glow.setBlurRadius(15)
+        title_glow.setXOffset(0)
+        title_glow.setYOffset(0)
+        title_glow.setColor(QtGui.QColor(255, 255, 255, 120))
+        title_lbl.setGraphicsEffect(title_glow)
+        
+        title_bar_layout.addWidget(self.close_dot)
+        title_bar_layout.addWidget(self.min_dot)
+        title_bar_layout.addStretch(1)
+        title_bar_layout.addWidget(title_lbl)
+        title_bar_layout.addStretch(1)
+        
+        right_spacer = QtWidgets.QWidget()
+        right_spacer.setFixedSize(32, 12)
+        title_bar_layout.addWidget(right_spacer)
+        
+        root.addWidget(title_bar)
+
+        # 1. Header Navigation
         root.addLayout(self._header())
 
-        # Separator Frame line
-        sep = QtWidgets.QFrame()
-        sep.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-        sep.setStyleSheet("background-color: rgba(255, 255, 255, 0.08); max-height: 1px; border: none;")
-        root.addWidget(sep)
+        # Vercel navigation switcher
+        nav_container = QtWidgets.QWidget()
+        nav_container.setObjectName("NavContainer")
+        nav_layout = QtWidgets.QHBoxLayout(nav_container)
+        nav_layout.setContentsMargins(2, 2, 2, 2)
+        nav_layout.setSpacing(2)
+        
+        self.nav_terminal_btn = QtWidgets.QPushButton("Terminal")
+        self.nav_terminal_btn.setObjectName("NavBtnActive")
+        self.nav_terminal_btn.clicked.connect(self._show_terminal_page)
+        
+        self.nav_settings_btn = QtWidgets.QPushButton("Settings")
+        self.nav_settings_btn.setObjectName("NavBtnInactive")
+        self.nav_settings_btn.clicked.connect(self._show_settings_page)
+        
+        nav_layout.addWidget(self.nav_terminal_btn, 1)
+        nav_layout.addWidget(self.nav_settings_btn, 1)
+        
+        root.addWidget(nav_container)
 
         # 2. Main Stacked page views
         self.central_stack = QtWidgets.QStackedWidget()
@@ -214,67 +280,33 @@ class PortalWindow(QtWidgets.QMainWindow):
 
     def _header(self) -> QtWidgets.QVBoxLayout:
         header_layout = QtWidgets.QVBoxLayout()
-        header_layout.setSpacing(8)
-        header_layout.setContentsMargins(0, 0, 0, 0)
+        header_layout.setSpacing(6)
+        header_layout.setContentsMargins(8, 0, 8, 4)
         
-        # Row 1: Brand Title and Navigation Buttons
-        top_row = QtWidgets.QHBoxLayout()
-        top_row.setSpacing(8)
+        status_layout = QtWidgets.QHBoxLayout()
+        status_layout.setSpacing(8)
         
-        title_layout = QtWidgets.QHBoxLayout()
-        title_layout.setSpacing(6)
-        brand_icon = QtWidgets.QLabel()
-        portal_icon_path = PROJECT_ROOT / "icons" / "portal.png"
-        if portal_icon_path.exists():
-            pixmap = QtGui.QPixmap(str(portal_icon_path))
-            scaled_pixmap = pixmap.scaled(36, 36, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
-            brand_icon.setPixmap(scaled_pixmap)
-        else:
-            brand_icon.setText("✦")
-            brand_icon.setStyleSheet("color: #38bdf8; font-size: 16pt; font-weight: bold;")
-        title = QtWidgets.QLabel("Portal")
-        title.setObjectName("HeroTitle")
-        title.setStyleSheet("font-size: 16pt; font-weight: 800; color: #ffffff;")
+        self.maya_dot = QtWidgets.QLabel()
+        self.maya_dot.setFixedSize(6, 6)
+        self.maya_lbl = QtWidgets.QLabel("Maya")
+        self.maya_lbl.setStyleSheet("color: #666666; font-size: 8.5pt; font-weight: 600;")
         
-        title_layout.addWidget(brand_icon)
-        title_layout.addWidget(title)
-        title_layout.addStretch(1)
+        self.blender_dot = QtWidgets.QLabel()
+        self.blender_dot.setFixedSize(6, 6)
+        self.blender_lbl = QtWidgets.QLabel("Blender")
+        self.blender_lbl.setStyleSheet("color: #666666; font-size: 8.5pt; font-weight: 600;")
         
-        # Navigation Links
-        self.nav_terminal_btn = QtWidgets.QPushButton("Terminal")
-        self.nav_terminal_btn.setObjectName("NavBtnActive")
-        self.nav_terminal_btn.setMinimumHeight(28)
-        self.nav_terminal_btn.setIcon(self.create_vector_icon("sync", "#38bdf8"))
-        self.nav_terminal_btn.setIconSize(QtCore.QSize(14, 14))
-        self.nav_terminal_btn.clicked.connect(self._show_terminal_page)
+        status_layout.addWidget(self.maya_dot)
+        status_layout.addWidget(self.maya_lbl)
+        status_layout.addWidget(self.blender_dot)
+        status_layout.addWidget(self.blender_lbl)
+        status_layout.addStretch(1)
         
-        self.nav_settings_btn = QtWidgets.QPushButton("Settings")
-        self.nav_settings_btn.setObjectName("NavBtnInactive")
-        self.nav_settings_btn.setMinimumHeight(28)
-        self.nav_settings_btn.setIcon(self.create_vector_icon("settings", "#64748b"))
-        self.nav_settings_btn.setIconSize(QtCore.QSize(14, 14))
-        self.nav_settings_btn.clicked.connect(self._show_settings_page)
+        self.policy_val = QtWidgets.QLabel("Direct Import")
+        self.policy_val.setStyleSheet("color: #888888; font-size: 8.5pt; font-weight: 600;")
+        status_layout.addWidget(self.policy_val)
         
-        top_row.addLayout(title_layout, 1)
-        top_row.addWidget(self.nav_terminal_btn)
-        top_row.addWidget(self.nav_settings_btn)
-        
-        # Row 2: Status pills row (highly compact and aligned)
-        status_row = QtWidgets.QHBoxLayout()
-        status_row.setSpacing(6)
-        
-        # Create connection indicators
-        self.maya_pill, self.maya_dot, self.maya_val = self._create_status_pill("Maya", "Idle", False)
-        self.blender_pill, self.blender_dot, self.blender_val = self._create_status_pill("Blender", "Idle", False)
-        self.mode_pill, self.policy_dot, self.policy_val = self._create_status_pill("Policy", "Update", True)
-        
-        status_row.addWidget(self.maya_pill)
-        status_row.addWidget(self.blender_pill)
-        status_row.addWidget(self.mode_pill)
-        status_row.addStretch(1)
-        
-        header_layout.addLayout(top_row)
-        header_layout.addLayout(status_row)
+        header_layout.addLayout(status_layout)
         return header_layout
 
     def _show_terminal_page(self) -> None:
@@ -296,11 +328,10 @@ class PortalWindow(QtWidgets.QMainWindow):
         self.nav_settings_btn.style().polish(self.nav_settings_btn)
 
     def _build_terminal_page(self) -> None:
-        """Constructs Region 1 and Region 2 in a simplified vertical layouts stack."""
         self.terminal_page = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout(self.terminal_page)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(12)
+        layout.setSpacing(10)
 
         # Region 1: DCC Launchpad Card
         layout.addWidget(self._build_launchpad())
@@ -308,107 +339,82 @@ class PortalWindow(QtWidgets.QMainWindow):
         # Region 2: Bridge Control Hub Card
         layout.addWidget(self._build_bridge_hub())
 
-        # Push layout to the top to prevent awkward stretching of elements!
         layout.addStretch(1)
 
         # Expandable Logger Drawer
         layout.addWidget(self._activity_drawer(), 0)
 
     def _build_launchpad(self) -> QtWidgets.QWidget:
-        """Region 1: Launchpad"""
         session = QtWidgets.QWidget()
         layout = QtWidgets.QHBoxLayout(session)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(10)
+        layout.setSpacing(8)
         
-        maya_btn = self._button("Launch Maya", self.launch_maya, primary=True)
-        maya_btn.setIcon(self.create_vector_icon("maya", "#ffffff"))
-        maya_btn.setIconSize(QtCore.QSize(18, 18))
-        maya_btn.setMinimumHeight(44)
-        self.apply_neon_glow(maya_btn, "#1d4ed8", 10)
+        maya_btn = self._button("Launch ", self.launch_maya, primary=False)
+        maya_btn.setMinimumHeight(38)
+        maya_icon_path = PROJECT_ROOT / "icons" / "maya_white.png"
+        if maya_icon_path.exists():
+            maya_btn.setIcon(QtGui.QIcon(str(maya_icon_path)))
+            maya_btn.setIconSize(QtCore.QSize(13, 13))
+            maya_btn.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
         
-        blender_btn = self._button("Launch Blender", self.launch_blender, primary=True)
-        blender_btn.setIcon(self.create_vector_icon("blender", "#ffffff"))
-        blender_btn.setIconSize(QtCore.QSize(18, 18))
-        blender_btn.setMinimumHeight(44)
-        self.apply_neon_glow(blender_btn, "#d97706", 10)
+        blender_btn = self._button("Launch ", self.launch_blender, primary=False)
+        blender_btn.setMinimumHeight(38)
+        blender_icon_path = PROJECT_ROOT / "icons" / "blender_white.png"
+        if blender_icon_path.exists():
+            blender_btn.setIcon(QtGui.QIcon(str(blender_icon_path)))
+            blender_btn.setIconSize(QtCore.QSize(16, 16))
+            blender_btn.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
         
         layout.addWidget(maya_btn, 1)
         layout.addWidget(blender_btn, 1)
         return session
- 
+
     def _build_bridge_hub(self) -> QtWidgets.QFrame:
-        """Region 2: Bridge Control Hub"""
         bridge = QtWidgets.QFrame()
         bridge.setObjectName("ControlHubFrame")
         layout = QtWidgets.QVBoxLayout(bridge)
-        layout.setContentsMargins(20, 20, 20, 20)
-        layout.setSpacing(14)
+        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setSpacing(12)
         
-        # Section title in upper-case high-tech accent
-        title_lbl = QtWidgets.QLabel("BRIDGE CONTROL HUB")
-        title_lbl.setStyleSheet("font-weight: 800; font-size: 9.5pt; color: #38bdf8; letter-spacing: 0.5px;")
-        layout.addWidget(title_lbl)
+        # Segment switcher container
+        segment_container = QtWidgets.QWidget()
+        segment_container.setObjectName("SegmentContainer")
+        segment_layout = QtWidgets.QHBoxLayout(segment_container)
+        segment_layout.setContentsMargins(2, 2, 2, 2)
+        segment_layout.setSpacing(2)
         
-        # Interactive Direction Selection Cards
-        flow_layout = QtWidgets.QHBoxLayout()
-        flow_layout.setSpacing(10)
-        
-        self.dir_maya_btn = QtWidgets.QPushButton()
-        self.dir_maya_btn.setText("Maya ➔ Blender")
-        self.dir_maya_btn.setIcon(self.create_vector_icon("maya", "#38bdf8"))
-        self.dir_maya_btn.setIconSize(QtCore.QSize(18, 18))
-        self.dir_maya_btn.setMinimumHeight(48)
+        self.dir_maya_btn = QtWidgets.QPushButton("Maya ➔ Blender")
+        self.dir_maya_btn.setObjectName("SegmentActive")
         self.dir_maya_btn.clicked.connect(self._on_dir_maya_clicked)
         
-        self.dir_blender_btn = QtWidgets.QPushButton()
-        self.dir_blender_btn.setText("Blender ➔ Maya")
-        self.dir_blender_btn.setIcon(self.create_vector_icon("blender", "#f97316"))
-        self.dir_blender_btn.setIconSize(QtCore.QSize(18, 18))
-        self.dir_blender_btn.setMinimumHeight(48)
+        self.dir_blender_btn = QtWidgets.QPushButton("Blender ➔ Maya")
+        self.dir_blender_btn.setObjectName("SegmentInactive")
         self.dir_blender_btn.clicked.connect(self._on_dir_blender_clicked)
         
-        flow_layout.addWidget(self.dir_maya_btn, 1)
-        flow_layout.addWidget(self.dir_blender_btn, 1)
+        segment_layout.addWidget(self.dir_maya_btn, 1)
+        segment_layout.addWidget(self.dir_blender_btn, 1)
+        layout.addWidget(segment_container)
         
-        # We put Flow Direction in a horizontal block
-        flow_widget = QtWidgets.QWidget()
-        flow_vbox = QtWidgets.QVBoxLayout(flow_widget)
-        flow_vbox.setContentsMargins(0, 0, 0, 0)
-        flow_vbox.setSpacing(8)
-        
-        flow_title = QtWidgets.QLabel("ACTIVE PIPELINE FLOW DIRECTION")
-        flow_title.setStyleSheet("font-weight: 700; font-size: 8pt; color: #64748b;")
-        
-        # Dynamic helpful description subtitle line
-        self.flow_description_lbl = QtWidgets.QLabel("")
+        self.flow_description_lbl = QtWidgets.QLabel("Maya Export ➔ Blender Import")
+        self.flow_description_lbl.setObjectName("FlowDescription")
         self.flow_description_lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.flow_description_lbl.setStyleSheet("font-size: 9pt; font-weight: 600; padding: 2px;")
-        
-        flow_vbox.addWidget(flow_title)
-        flow_vbox.addLayout(flow_layout)
-        flow_vbox.addWidget(self.flow_description_lbl)
-        layout.addWidget(flow_widget)
+        layout.addWidget(self.flow_description_lbl)
  
         # Centerpiece Automated Sync Button
-        self.sync_btn = self._button("ROUNDTRIP SYNC", self.sync_current)
-        self.sync_btn.setIcon(self.create_vector_icon("sync", "#ffffff"))
-        self.sync_btn.setIconSize(QtCore.QSize(20, 20))
-        self.sync_btn.setMinimumHeight(46)
-        self.sync_btn.setStyleSheet("font-size: 11pt; font-weight: 800; color: #ffffff; background-color: #2563eb; letter-spacing: 0.5px;")
-        self.apply_neon_glow(self.sync_btn, "#2563eb", 12)
+        self.sync_btn = self._button("ROUNDTRIP SYNC", self.sync_current, primary=True)
+        self.sync_btn.setMinimumHeight(44)
         
-        sync_widget = QtWidgets.QWidget()
-        sync_vbox = QtWidgets.QVBoxLayout(sync_widget)
-        sync_vbox.setContentsMargins(0, 4, 0, 4)
-        sync_vbox.setSpacing(6)
-        sync_title = QtWidgets.QLabel("AUTOMATED ASSET TRANSMISSION")
-        sync_title.setStyleSheet("font-weight: 700; font-size: 8pt; color: #64748b;")
-        sync_vbox.addWidget(sync_title)
-        sync_vbox.addWidget(self.sync_btn)
-        layout.addWidget(sync_widget)
+        sync_glow = QtWidgets.QGraphicsDropShadowEffect(self.sync_btn)
+        sync_glow.setBlurRadius(15)
+        sync_glow.setXOffset(0)
+        sync_glow.setYOffset(0)
+        sync_glow.setColor(QtGui.QColor(255, 255, 255, 100))
+        self.sync_btn.setGraphicsEffect(sync_glow)
         
-        # Collapsible Advanced Overrides & Policies Drawer to minimize clutter
+        layout.addWidget(self.sync_btn)
+        
+        # Collapsible Advanced Overrides & Policies Drawer
         self.advanced_container = QtWidgets.QWidget()
         adv_layout = QtWidgets.QVBoxLayout(self.advanced_container)
         adv_layout.setContentsMargins(0, 6, 0, 0)
@@ -421,13 +427,11 @@ class PortalWindow(QtWidgets.QMainWindow):
         override_layout.setContentsMargins(0, 0, 0, 0)
         override_layout.setSpacing(8)
         
-        self.export_btn = self._button("Manual Export Current", self.export_current, primary=True)
-        self.export_btn.setIcon(self.create_vector_icon("export", "#ffffff"))
-        self.export_btn.setIconSize(QtCore.QSize(16, 16))
+        self.export_btn = self._button("Manual Export", self.export_current)
+        self.export_btn.setMinimumHeight(34)
         
-        self.import_btn = self._button("Manual Import Latest", self.import_current)
-        self.import_btn.setIcon(self.create_vector_icon("import", "#cbd5e1"))
-        self.import_btn.setIconSize(QtCore.QSize(16, 16))
+        self.import_btn = self._button("Manual Import", self.import_current)
+        self.import_btn.setMinimumHeight(34)
         
         override_layout.addWidget(self.export_btn, 1)
         override_layout.addWidget(self.import_btn, 1)
@@ -438,8 +442,8 @@ class PortalWindow(QtWidgets.QMainWindow):
         adv_form.setVerticalSpacing(12)
         adv_form.setLabelAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         
-        adv_form.addRow("Manual Overrides", override_container)
- 
+        adv_form.addRow("Overrides", override_container)
+  
         # Policies Row Container
         self.update_existing = QtWidgets.QCheckBox("Update existing mesh by name (preserves shaders)")
         self.update_existing.setChecked(True)
@@ -451,13 +455,13 @@ class PortalWindow(QtWidgets.QMainWindow):
         
         policies_container = QtWidgets.QWidget()
         policies_container.setObjectName("TransContainer")
-        policies = QtWidgets.QHBoxLayout(policies_container)
+        policies = QtWidgets.QVBoxLayout(policies_container)
         policies.setContentsMargins(0, 0, 0, 0)
-        policies.setSpacing(12)
+        policies.setSpacing(6)
         policies.addWidget(self.update_existing)
         policies.addWidget(self.sync_transforms)
         adv_form.addRow("Policies", policies_container)
- 
+  
         # Exchange folder shortcut path row container
         exchange_container = QtWidgets.QWidget()
         exchange_container.setObjectName("TransContainer")
@@ -470,7 +474,7 @@ class PortalWindow(QtWidgets.QMainWindow):
         self.exchange_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         
         open_folder_btn = self._button("Open Folder", self.open_exchange)
-        open_folder_btn.setIcon(self.create_vector_icon("folder", "#94a3b8"))
+        open_folder_btn.setIcon(self.create_vector_icon("folder", "#ffffff"))
         open_folder_btn.setIconSize(QtCore.QSize(14, 14))
         open_folder_btn.setFixedWidth(110)
         
@@ -479,10 +483,10 @@ class PortalWindow(QtWidgets.QMainWindow):
         adv_form.addRow("Exchange Path", exchange_container)
         
         adv_layout.addLayout(adv_form)
-        self.advanced_container.setVisible(False)  # Hidden by default to avoid clutter!
+        self.advanced_container.setVisible(False)
         
         # Clickable Link to expand/collapse
-        self.toggle_advanced_btn = QtWidgets.QPushButton("Show Advanced Overrides & Policies ▾")
+        self.toggle_advanced_btn = QtWidgets.QPushButton("Advanced Options ▾")
         self.toggle_advanced_btn.setObjectName("CollapseToggleBtn")
         self.toggle_advanced_btn.setMinimumHeight(24)
         self.toggle_advanced_btn.clicked.connect(self._toggle_advanced_controls)
@@ -490,41 +494,36 @@ class PortalWindow(QtWidgets.QMainWindow):
         layout.addWidget(self.toggle_advanced_btn, 0, QtCore.Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.advanced_container)
         return bridge
-
+ 
     def _toggle_advanced_controls(self) -> None:
         is_visible = self.advanced_container.isVisible()
         self.advanced_container.setVisible(not is_visible)
         if is_visible:
-            self.toggle_advanced_btn.setText("Show Advanced Overrides & Policies ▾")
+            self.toggle_advanced_btn.setText("Advanced Options ▾")
         else:
-            self.toggle_advanced_btn.setText("Hide Advanced Overrides & Policies ▴")
+            self.toggle_advanced_btn.setText("Advanced Options ▴")
 
     def _activity_drawer(self) -> QtWidgets.QWidget:
         self.log = QtWidgets.QPlainTextEdit()
         self.log.setReadOnly(True)
-        self.log.setPlaceholderText("Operations console initialized...")
-        self.log.setMaximumHeight(140)
+        self.log.setPlaceholderText("Console logs...")
+        self.log.setMaximumHeight(110)
 
         drawer = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout(drawer)
-        layout.setContentsMargins(2, 6, 2, 2)
+        layout.setContentsMargins(0, 4, 0, 0)
         layout.setSpacing(6)
         
         head = QtWidgets.QHBoxLayout()
-        icon = QtWidgets.QLabel()
-        icon.setPixmap(self.create_vector_icon("bolt", "#64748b").pixmap(16, 16))
-        lbl = QtWidgets.QLabel("Activity Terminal Operations Console")
-        lbl.setStyleSheet("font-weight: bold; color: #64748b; font-size: 8.5pt;")
-        head.addWidget(icon)
+        lbl = QtWidgets.QLabel("Activity Console")
+        lbl.setStyleSheet("font-weight: bold; color: #666666; font-size: 8.5pt;")
         head.addWidget(lbl)
         head.addStretch(1)
         
-        clear_btn = self._button("Clear Console", self.log.clear)
-        clear_btn.setObjectName("GhostBtn")
-        clear_btn.setIcon(self.create_vector_icon("bolt", "#64748b"))
-        clear_btn.setIconSize(QtCore.QSize(12, 12))
-        clear_btn.setMinimumHeight(24)
-        clear_btn.setFixedWidth(110)
+        clear_btn = self._button("Clear Logs", self.log.clear)
+        clear_btn.setObjectName("CollapseToggleBtn")
+        clear_btn.setMinimumHeight(20)
+        clear_btn.setFixedWidth(80)
         head.addWidget(clear_btn)
         layout.addLayout(head)
         layout.addWidget(self.log)
@@ -534,7 +533,7 @@ class PortalWindow(QtWidgets.QMainWindow):
         self.config_page = QtWidgets.QWidget()
         layout = QtWidgets.QVBoxLayout(self.config_page)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(12)
+        layout.setSpacing(10)
 
         paths = self._card("FileSystem Executables")
         paths_layout = paths.layout()
@@ -543,7 +542,7 @@ class PortalWindow(QtWidgets.QMainWindow):
         self.exchange_path = self._path_row(paths_layout, "Exchange Directory", self._browse_exchange)
         layout.addWidget(paths)
 
-        ports = self._card("Network Connection Ports")
+        ports = self._card("Connection Ports")
         ports_layout = ports.layout()
         self.maya_port = QtWidgets.QSpinBox()
         self.maya_port.setRange(1024, 65535)
@@ -553,30 +552,21 @@ class PortalWindow(QtWidgets.QMainWindow):
         ports_layout.addRow("Blender Server Port", self.blender_port)
         layout.addWidget(ports)
 
-        # Setup commands completely moved to settings
-        scripts_box = self._card("DCC Server Startup Commands & Scripts")
+        scripts_box = self._card("Startup Scripts")
         scripts_layout = scripts_box.layout()
         
         copy_m = self._button("Copy Maya Server Script", self.copy_maya_bootstrap)
-        copy_m.setIcon(self.create_vector_icon("maya", "#cbd5e1"))
-        copy_m.setIconSize(QtCore.QSize(14, 14))
-        
         copy_b = self._button("Copy Blender Server Script", self.copy_blender_bootstrap)
-        copy_b.setIcon(self.create_vector_icon("blender", "#cbd5e1"))
-        copy_b.setIconSize(QtCore.QSize(14, 14))
         
         scripts_row = QtWidgets.QHBoxLayout()
-        scripts_row.setSpacing(10)
+        scripts_row.setSpacing(8)
         scripts_row.addWidget(copy_m, 1)
         scripts_row.addWidget(copy_b, 1)
         scripts_layout.addRow("", scripts_row)
         layout.addWidget(scripts_box)
 
-        save_btn = self._button("Save Settings Configurations", self.save_config, primary=True)
-        save_btn.setIcon(self.create_vector_icon("settings", "#ffffff"))
-        save_btn.setIconSize(QtCore.QSize(18, 18))
+        save_btn = self._button("Save Settings", self.save_config, primary=True)
         save_btn.setMinimumHeight(38)
-        self.apply_neon_glow(save_btn, "#2563eb", 12)
         layout.addWidget(save_btn)
 
         layout.addStretch(1)
@@ -584,9 +574,9 @@ class PortalWindow(QtWidgets.QMainWindow):
     def _card(self, title: str) -> QtWidgets.QGroupBox:
         box = QtWidgets.QGroupBox(title)
         form = QtWidgets.QFormLayout(box)
-        form.setContentsMargins(16, 16, 16, 16)
-        form.setHorizontalSpacing(14)
-        form.setVerticalSpacing(12)
+        form.setContentsMargins(14, 14, 14, 14)
+        form.setHorizontalSpacing(12)
+        form.setVerticalSpacing(10)
         form.setLabelAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
         return box
 
@@ -594,7 +584,7 @@ class PortalWindow(QtWidgets.QMainWindow):
         button = QtWidgets.QPushButton(label)
         button.setObjectName("PrimaryBtn" if primary else "GhostBtn")
         button.clicked.connect(callback)
-        button.setMinimumHeight(32)
+        button.setMinimumHeight(30)
         return button
 
     def _path_row(self, layout: QtWidgets.QFormLayout, label: str, browse_callback) -> QtWidgets.QLineEdit:
@@ -632,40 +622,26 @@ class PortalWindow(QtWidgets.QMainWindow):
         self._message("Transmission flow set to: Blender ➔ Maya.")
 
     def _update_direction_ui(self) -> None:
-        """Handles visual transition states and glowing shadows for active flow buttons."""
         if self.direction == "maya":
-            self.dir_maya_btn.setObjectName("FlowBtnActive")
-            self.dir_blender_btn.setObjectName("FlowBtnInactive")
-            self.apply_neon_glow(self.dir_maya_btn, "#38bdf8", 12)
-            self.dir_blender_btn.setGraphicsEffect(None)
-            
-            # Subtitle explaining direction (eg: Maya export -> Blender import)
+            self.dir_maya_btn.setObjectName("SegmentActive")
+            self.dir_blender_btn.setObjectName("SegmentInactive")
             self.flow_description_lbl.setText("Maya Export ➔ Blender Import")
-            self.flow_description_lbl.setStyleSheet("font-size: 9.5pt; font-weight: 700; color: #38bdf8; letter-spacing: 0.5px;")
         else:
-            self.dir_maya_btn.setObjectName("FlowBtnInactive")
-            self.dir_blender_btn.setObjectName("FlowBtnActive")
-            self.apply_neon_glow(self.dir_blender_btn, "#f97316", 12) # Blender Orange
-            self.dir_maya_btn.setGraphicsEffect(None)
-            
-            # Subtitle explaining direction (eg: Blender export -> Maya import)
+            self.dir_maya_btn.setObjectName("SegmentInactive")
+            self.dir_blender_btn.setObjectName("SegmentActive")
             self.flow_description_lbl.setText("Blender Export ➔ Maya Import")
-            self.flow_description_lbl.setStyleSheet("font-size: 9.5pt; font-weight: 700; color: #f97316; letter-spacing: 0.5px;")
             
-        self.dir_maya_btn.style().unpolish(self.dir_maya_btn)
-        self.dir_maya_btn.style().polish(self.dir_maya_btn)
-        self.dir_blender_btn.style().unpolish(self.dir_blender_btn)
-        self.dir_blender_btn.style().polish(self.dir_blender_btn)
+        for btn in (self.dir_maya_btn, self.dir_blender_btn):
+            btn.style().unpolish(btn)
+            btn.style().polish(btn)
 
     def _on_policy_changed(self) -> None:
         if self.update_existing.isChecked():
-            self._set_dot_state(self.policy_dot, True)
             if self.sync_transforms.isChecked():
                 self.policy_val.setText("Update + Transform Sync")
             else:
                 self.policy_val.setText("Update by Name")
         else:
-            self._set_dot_state(self.policy_dot, False)
             if self.sync_transforms.isChecked():
                 self.policy_val.setText("Transform Sync Only")
             else:
@@ -714,6 +690,7 @@ class PortalWindow(QtWidgets.QMainWindow):
             Path(self.config.exchange_dir),
             update_existing=self.update_existing.isChecked(),
             sync_transforms=self.sync_transforms.isChecked(),
+            freeze_transforms=True,
         )
         try:
             response = send_python(port, code)
@@ -763,7 +740,6 @@ class PortalWindow(QtWidgets.QMainWindow):
             self._message(f"{label} executable not found: {exe}")
             return
             
-        # Clean PyInstaller environment overrides so that DCCs launch with their native Python configurations
         env = os.environ.copy()
         for key in ["PYTHONPATH", "PYTHONHOME"]:
             env.pop(key, None)
@@ -772,7 +748,6 @@ class PortalWindow(QtWidgets.QMainWindow):
             
         env["PORTAL_BRIDGE_ROOT"] = str(PROJECT_ROOT)
         
-        # Avoid setting working directory to a temporary sys._MEIPASS path
         import sys
         if getattr(sys, 'frozen', False):
             working_dir = Path(sys.executable).parent.resolve()
@@ -785,10 +760,8 @@ class PortalWindow(QtWidgets.QMainWindow):
     def _mark_connected(self, host: str) -> None:
         if host == "maya":
             self._set_dot_state(self.maya_dot, True)
-            self.maya_val.setText("Connected")
         else:
             self._set_dot_state(self.blender_dot, True)
-            self.blender_val.setText("Connected")
 
     def _copy_text(self, text: str) -> None:
         QtWidgets.QApplication.clipboard().setText(text)
@@ -796,7 +769,6 @@ class PortalWindow(QtWidgets.QMainWindow):
     def _message(self, text: str) -> None:
         stamp = datetime.now().strftime("%H:%M:%S")
         self.log.appendPlainText(f"[{stamp}] {text}")
-        self.statusBar().showMessage(text)
 
 
 def main() -> int:
@@ -804,7 +776,7 @@ def main() -> int:
     app.setApplicationName("Portal - Maya Blender Asset Bridge (FBX)")
     
     from bridge_core.settings import PROJECT_ROOT
-    portal_icon_path = PROJECT_ROOT / "icons" / "portal.png"
+    portal_icon_path = PROJECT_ROOT / "icons" / "portal_logo.png"
     if portal_icon_path.exists():
         app.setWindowIcon(QtGui.QIcon(str(portal_icon_path)))
         

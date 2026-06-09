@@ -234,6 +234,7 @@ class BridgeWindow(QtWidgets.QDialog):
             preserve_materials=self.preserve_materials.isChecked(),
             preserve_smoothing=self.preserve_smoothing.isChecked(),
             embed_textures=self.embed_textures.isChecked(),
+            freeze_transforms=True,
         )
 
     def _browse(self) -> None:

@@ -32,6 +32,7 @@ def bridge_action_code(
     exchange_dir: Path,
     update_existing: bool = True,
     sync_transforms: bool = False,
+    freeze_transforms: bool = True,
 ) -> str:
     if host not in {"maya", "blender"}:
         raise ValueError(host)
@@ -44,12 +45,16 @@ def bridge_action_code(
     exchange_posix = exchange_dir.as_posix()
     return "\n".join(
         [
+            "import sys",
+            "if 'bridge_core.settings' in sys.modules: del sys.modules['bridge_core.settings']",
+            f"if '{module_name}' in sys.modules: del sys.modules['{module_name}']",
             "from pathlib import Path",
             "from bridge_core.settings import BridgeSettings",
             f"from {module_name} import {class_name}",
             (
                 f"settings = BridgeSettings(fbx_path=Path('{exchange_posix}') / 'portal_transfer.fbx', "
-                f"update_existing={update_existing}, sync_transforms={sync_transforms})"
+                f"update_existing={update_existing}, sync_transforms={sync_transforms}, "
+                f"freeze_transforms={freeze_transforms})"
             ),
             f"{class_name}().{method}(settings)",
         ]
