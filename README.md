@@ -85,56 +85,6 @@ If the shared dependency folder ever needs to be rebuilt, run this once from the
 ```powershell
 python scripts/stage_pyqt6_runtime.py
 ```
-
-## Legacy Embedded Launch
-
-### Maya
-
-Run this in Maya Script Editor as Python:
-
-```python
-import sys
-sys.path.insert(0, r"D:\Local_P4\TA_Storage\Jaisurya\Maya Blender workflow")
-import launch_maya
-launch_maya.show()
-```
-
-To install a shelf button, run this once in Maya Script Editor as Python:
-
-```python
-import sys
-sys.path.insert(0, r"D:\Local_P4\TA_Storage\Jaisurya\Maya Blender workflow")
-import install_maya
-install_maya.install_shelf_button()
-```
-
-You can also drag `install_maya.py` directly into the Maya viewport. It creates/selects a custom shelf tab named **FBX Bridge** and adds the launcher button there.
-
-### Blender
-
-Run this in Blender Python console or Text Editor:
-
-```python
-import sys
-sys.path.insert(0, r"D:\Local_P4\TA_Storage\Jaisurya\Maya Blender workflow")
-import launch_blender
-launch_blender.show()
-```
-
-To install a Blender sidebar button, install `blender_addon.py` from Blender Preferences > Add-ons > Install, then enable **Maya Blender FBX Bridge**. The button appears in 3D View > Sidebar > FBX Bridge.
-
-Blender copies single-file add-ons into its add-ons folder, so the add-on has a **Bridge Project Folder** preference. Set it to the shared server project folder if needed:
-
-```text
-D:\Local_P4\TA_Storage\Jaisurya\Maya Blender workflow
-```
-
-When moved to the server, replace this path with the final UNC/share path, for example:
-
-```text
-\\server\tools\Maya Blender workflow
-```
-
 ## Default Bridge Folder
 
 Exports are written to:
