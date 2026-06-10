@@ -2,6 +2,6 @@
   "blender_exe": "C:\\Program Files\\Blender Foundation\\Blender 4.5\\blender.exe",
   "blender_port": 7722,
   "exchange_dir": "{PROJECT_ROOT}/exchange",
-  "maya_exe": "C:\\Program Files\\Autodesk\\Maya2024\\bin\\maya.exe",
+  "maya_exe": "C:/Program Files/Autodesk/Maya2025/bin/maya.exe",
   "maya_port": 7821
 }

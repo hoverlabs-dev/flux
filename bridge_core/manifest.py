@@ -32,6 +32,7 @@ class BridgeManifest:
     source_version: str
     fbx_file: str
     meshes: list[MeshRecord] = field(default_factory=list)
+    unit_scale: float = 0.01
     schema_version: int = SCHEMA_VERSION
 
     def to_dict(self) -> dict[str, Any]:
@@ -45,6 +46,7 @@ class BridgeManifest:
             source_version=data.get("source_version", "unknown"),
             fbx_file=data["fbx_file"],
             meshes=meshes,
+            unit_scale=float(data.get("unit_scale", 0.01)),
             schema_version=int(data.get("schema_version", SCHEMA_VERSION)),
         )
 

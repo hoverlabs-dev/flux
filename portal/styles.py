@@ -31,25 +31,31 @@ QLabel#TitleBarTitle {
 }
 
 QPushButton#CloseDot {
-    background-color: #ff5f56;
-    border: 1.5px solid #d0433a;
+    background-color: #262626;
+    border: 1px solid #3d3d3d;
     border-radius: 6px;
+    min-height: 0px;
+    min-width: 0px;
+    padding: 0px;
 }
 
 QPushButton#CloseDot:hover {
-    background-color: #ff3b30;
-    border: 1.5px solid #ff9b94;
+    background-color: #ef4444;
+    border: 1px solid #f87171;
 }
 
 QPushButton#MinDot {
-    background-color: #ffbd2e;
-    border: 1.5px solid #dca123;
+    background-color: #262626;
+    border: 1px solid #3d3d3d;
     border-radius: 6px;
+    min-height: 0px;
+    min-width: 0px;
+    padding: 0px;
 }
 
 QPushButton#MinDot:hover {
-    background-color: #ffcc00;
-    border: 1.5px solid #ffeb99;
+    background-color: #f59e0b;
+    border: 1px solid #fbbf24;
 }
 
 /* Typography */
@@ -214,6 +220,7 @@ QPushButton#PrimaryBtn:pressed {
 QPushButton#GhostBtn {
     background-color: transparent;
     border: 1px solid #1f1f1f;
+    padding: 6px 8px;
 }
 
 QPushButton#GhostBtn:hover {
@@ -312,5 +319,16 @@ QScrollBar::handle:vertical {
 
 QScrollBar::handle:vertical:hover {
     background: #333333;
+}
+
+/* Tooltips */
+QToolTip {
+    background-color: #0c0c0c;
+    border: 1px solid #1f1f1f;
+    border-radius: 4px;
+    color: #a3a3a3;
+    font-family: "Geist Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 8pt;
+    padding: 3px 6px;
 }
 """

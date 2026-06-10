@@ -1,16 +1,19 @@
 from __future__ import annotations
 
+import traceback
 from typing import Any
 
 from bridge_core.host_base import BridgeHost
 from bridge_core.manifest import BridgeManifest, MeshRecord
 from bridge_core.naming import sanitize_name, transfer_path
-from bridge_core.settings import BridgeSettings
+from bridge_core.settings import BridgeSettings, UNIT_TO_METERS
 from bridge_core.state import apply_latest_for_import, write_latest
 
 
 try:
+    # pyrefly: ignore [missing-import]
     import maya.cmds as cmds
+    # pyrefly: ignore [missing-import]
     import maya.mel as mel
 except Exception:  # pragma: no cover - only available inside Maya
     cmds = None
@@ -214,7 +217,7 @@ class MayaBridgeHost(BridgeHost):
                 try:
                     cmds.polyNormalPerVertex(node, unFreezeNormal=True)
                 except Exception:
-                    pass
+                    traceback.print_exc()
                 if manifest and settings.preserve_smoothing:
                     try:
                         by_short_name = {self._short_name(record.name): record for record in manifest.meshes}
@@ -223,7 +226,7 @@ class MayaBridgeHost(BridgeHost):
                         if record:
                             self._apply_sharp_edges(node, record.sharp_edges)
                     except Exception:
-                        pass
+                        traceback.print_exc()
                     
         if settings.update_existing and manifest:
             updated = self._update_existing_meshes(imported, manifest, before_by_name, settings)
@@ -242,39 +245,55 @@ class MayaBridgeHost(BridgeHost):
         mesh_transforms = [node for node in transforms if self._has_mesh_shape(node)]
         records = [self._record_for_transform(node) for node in mesh_transforms]
         self._merge_previous_blender_metadata(records, settings)
+        maya_unit = cmds.currentUnit(query=True, linear=True)
+        unit_scale = UNIT_TO_METERS.get(maya_unit, 0.01)
         return BridgeManifest(
             source_host=self.host_name,
             source_version=str(cmds.about(version=True)),
             fbx_file=str(settings.fbx_path),
             meshes=records,
+            unit_scale=unit_scale,
         )
 
     def apply_manifest(self, manifest: BridgeManifest, settings: BridgeSettings) -> None:
         self._require_maya()
         by_short_name = {self._short_name(record.name): record for record in manifest.meshes}
-        scale_factor = 100.0 if manifest.source_host == "blender" else 1.0
+        
+        maya_unit = cmds.currentUnit(query=True, linear=True)
+        target_scale = UNIT_TO_METERS.get(maya_unit, 0.01)
+        scale_factor = manifest.unit_scale / target_scale
+        
         for transform in cmds.ls(selection=True, long=True, type="transform") or []:
             short_name = self._short_name(transform)
             record = by_short_name.get(short_name)
             if not record:
                 continue
             if settings.sync_transforms and record.matrix_world:
-                mat_data = list(record.matrix_world)
-                if len(mat_data) == 16:
-                    if manifest.source_host == "blender":
-                        mat_data = self._blender_to_maya_matrix(mat_data)
-                    else:
-                        mat_data[12] *= scale_factor
-                        mat_data[13] *= scale_factor
-                        mat_data[14] *= scale_factor
-                    mat_data = self._clean_matrix(mat_data)
-                cmds.xform(transform, worldSpace=True, matrix=mat_data)
+                try:
+                    mat_data = list(record.matrix_world)
+                    if len(mat_data) == 16:
+                        if manifest.source_host == "blender":
+                            mat_data = self._blender_to_maya_matrix(mat_data, target_scale=target_scale)
+                        else:
+                            mat_data[12] *= scale_factor
+                            mat_data[13] *= scale_factor
+                            mat_data[14] *= scale_factor
+                        mat_data = self._clean_matrix(mat_data)
+                    cmds.xform(transform, worldSpace=True, matrix=mat_data)
+                except Exception:
+                    traceback.print_exc()
             if settings.preserve_pivots and record.rotate_pivot:
-                scaled_pivot = [val * scale_factor for val in record.rotate_pivot]
-                cmds.xform(transform, worldSpace=True, rotatePivot=scaled_pivot)
+                try:
+                    scaled_pivot = [val * scale_factor for val in record.rotate_pivot]
+                    cmds.xform(transform, worldSpace=True, rotatePivot=scaled_pivot)
+                except Exception:
+                    traceback.print_exc()
             if settings.preserve_pivots and record.scale_pivot:
-                scaled_pivot = [val * scale_factor for val in record.scale_pivot]
-                cmds.xform(transform, worldSpace=True, scalePivot=scaled_pivot)
+                try:
+                    scaled_pivot = [val * scale_factor for val in record.scale_pivot]
+                    cmds.xform(transform, worldSpace=True, scalePivot=scaled_pivot)
+                except Exception:
+                    traceback.print_exc()
             if settings.preserve_custom_properties:
                 self._apply_custom_properties(transform, record.custom_properties)
             if settings.preserve_smoothing:
@@ -420,7 +439,7 @@ class MayaBridgeHost(BridgeHost):
                 try:
                     self._apply_sharp_edges(target, record.sharp_edges)
                 except Exception:
-                    pass
+                    traceback.print_exc()
                 
             if settings.preserve_custom_properties:
                 self._apply_custom_properties(target, record.custom_properties)
@@ -570,23 +589,25 @@ class MayaBridgeHost(BridgeHost):
             except Exception:
                 pass
 
-    def _blender_to_maya_matrix(self, matrix_blender: list[float]) -> list[float]:
+    def _blender_to_maya_matrix(self, matrix_blender: list[float], target_scale: float = 0.01) -> list[float]:
         # Reconstruct as a 4x4 list of lists (row-major)
         Mb = [matrix_blender[i:i+4] for i in range(0, 16, 4)]
+        
+        inv_scale = 1.0 / target_scale
         
         # Temp = Mb @ C
         Temp = [[0.0]*4 for _ in range(4)]
         for r in range(4):
-            Temp[r][0] = Mb[r][0] * 0.01
-            Temp[r][1] = Mb[r][2] * 0.01
-            Temp[r][2] = -Mb[r][1] * 0.01
+            Temp[r][0] = Mb[r][0] * target_scale
+            Temp[r][1] = Mb[r][2] * target_scale
+            Temp[r][2] = -Mb[r][1] * target_scale
             Temp[r][3] = Mb[r][3]
             
         # M_maya_t = C_inv @ Temp
         M_maya_t = [
-            [Temp[0][0] * 100.0, Temp[0][1] * 100.0, Temp[0][2] * 100.0, Temp[0][3] * 100.0],
-            [Temp[2][0] * 100.0, Temp[2][1] * 100.0, Temp[2][2] * 100.0, Temp[2][3] * 100.0],
-            [Temp[1][0] * -100.0, Temp[1][1] * -100.0, Temp[1][2] * -100.0, Temp[1][3] * -100.0],
+            [Temp[0][0] * inv_scale, Temp[0][1] * inv_scale, Temp[0][2] * inv_scale, Temp[0][3] * inv_scale],
+            [Temp[2][0] * inv_scale, Temp[2][1] * inv_scale, Temp[2][2] * inv_scale, Temp[2][3] * inv_scale],
+            [Temp[1][0] * -inv_scale, Temp[1][1] * -inv_scale, Temp[1][2] * -inv_scale, Temp[1][3] * -inv_scale],
             [Temp[3][0], Temp[3][1], Temp[3][2], Temp[3][3]]
         ]
         

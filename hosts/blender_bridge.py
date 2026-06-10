@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import traceback
+
 from bridge_core.host_base import BridgeHost
 from bridge_core.manifest import BridgeManifest, MeshRecord
 from bridge_core.naming import sanitize_name, transfer_path
@@ -8,7 +10,9 @@ from bridge_core.state import apply_latest_for_import, write_latest
 
 
 try:
+    # pyrefly: ignore [missing-import]
     import bpy
+    # pyrefly: ignore [missing-import]
     from mathutils import Matrix
 except Exception:  # pragma: no cover - only available inside Blender
     bpy = None
@@ -138,7 +142,7 @@ class BlenderBridgeHost(BridgeHost):
             if obj.type == "MESH":
                 self._force_material_link_to_data(obj)
         if manifest and settings.preserve_pivots:
-            by_short_name = {record.name: record for record in manifest.meshes}
+            by_short_name = {sanitize_name(record.name): record for record in manifest.meshes}
             for obj in imported:
                 if obj.type == "MESH":
                     key = self._match_key(obj.name, by_short_name)
@@ -146,12 +150,13 @@ class BlenderBridgeHost(BridgeHost):
                     if record and record.rotate_pivot:
                         try:
                             if manifest.source_host == "maya":
-                                scaled_pivot = [record.rotate_pivot[0] * 0.01, -record.rotate_pivot[2] * 0.01, record.rotate_pivot[1] * 0.01]
+                                scale_factor = manifest.unit_scale
+                                scaled_pivot = [record.rotate_pivot[0] * scale_factor, -record.rotate_pivot[2] * scale_factor, record.rotate_pivot[1] * scale_factor]
                             else:
                                 scaled_pivot = record.rotate_pivot
                             self._set_object_pivot(obj, scaled_pivot)
                         except Exception:
-                            pass
+                            traceback.print_exc()
         if settings.update_existing and manifest:
             self._update_existing_meshes(imported, manifest, before_objects, settings)
         else:
@@ -222,12 +227,13 @@ class BlenderBridgeHost(BridgeHost):
             if settings.preserve_pivots and record.rotate_pivot:
                 try:
                     if manifest.source_host == "maya":
-                        scaled_pivot = [record.rotate_pivot[0] * 0.01, -record.rotate_pivot[2] * 0.01, record.rotate_pivot[1] * 0.01]
+                        scale_factor = manifest.unit_scale
+                        scaled_pivot = [record.rotate_pivot[0] * scale_factor, -record.rotate_pivot[2] * scale_factor, record.rotate_pivot[1] * scale_factor]
                     else:
                         scaled_pivot = record.rotate_pivot
                     self._set_object_pivot(target, scaled_pivot)
                 except Exception:
-                    pass
+                    traceback.print_exc()
             try:
                 self._restore_material_slots(target, blender_materials, record.material_slots)
             except Exception:
@@ -284,18 +290,21 @@ class BlenderBridgeHost(BridgeHost):
     def collect_manifest(self, settings: BridgeSettings) -> BridgeManifest:
         self._require_blender()
         records = [self._record_for_object(obj) for obj in self._mesh_objects(settings.selected_only)]
+        unit_settings = bpy.context.scene.unit_settings
+        unit_scale = unit_settings.scale_length if unit_settings.system in {"METRIC", "IMPERIAL"} else 1.0
         return BridgeManifest(
             source_host=self.host_name,
             source_version=bpy.app.version_string,
             fbx_file=str(settings.fbx_path),
             meshes=records,
+            unit_scale=unit_scale,
         )
 
     def apply_manifest(self, manifest: BridgeManifest, settings: BridgeSettings) -> None:
         self._require_blender()
-        by_short_name = {record.name: record for record in manifest.meshes}
+        by_short_name = {sanitize_name(record.name): record for record in manifest.meshes}
         for obj in bpy.context.selected_objects:
-            record = by_short_name.get(obj.name.split(".")[0])
+            record = by_short_name.get(sanitize_name(obj.name.split(".")[0]))
             if not record:
                 continue
             if settings.sync_transforms and Matrix and record.matrix_world and len(record.matrix_world) == 16:
@@ -321,16 +330,17 @@ class BlenderBridgeHost(BridgeHost):
                         mat_data = list(record.matrix_world)
                         obj.matrix_world = Matrix([mat_data[index:index + 4] for index in range(0, 16, 4)])
                 except Exception:
-                    pass
+                    traceback.print_exc()
             if settings.sync_transforms and settings.preserve_pivots and record.rotate_pivot:
                 try:
                     if manifest.source_host == "maya":
-                        scaled_pivot = [record.rotate_pivot[0] * 0.01, -record.rotate_pivot[2] * 0.01, record.rotate_pivot[1] * 0.01]
+                        scale_factor = manifest.unit_scale
+                        scaled_pivot = [record.rotate_pivot[0] * scale_factor, -record.rotate_pivot[2] * scale_factor, record.rotate_pivot[1] * scale_factor]
                     else:
                         scaled_pivot = record.rotate_pivot
                     self._set_object_pivot(obj, scaled_pivot)
                 except Exception:
-                    pass
+                    traceback.print_exc()
             if settings.preserve_custom_properties:
                 for key, value in record.custom_properties.items():
                     try:

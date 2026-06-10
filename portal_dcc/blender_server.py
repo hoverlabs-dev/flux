@@ -38,6 +38,10 @@ class _BlenderRequestHandler(socketserver.BaseRequestHandler):
         self.request.sendall(response.encode("utf-8", errors="replace"))
 
 
+class _ReusableTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
+
 def start(port: int = 7722) -> None:
     global _SERVER
     if _SERVER:
@@ -45,7 +49,7 @@ def start(port: int = 7722) -> None:
         return
     if not bpy.app.timers.is_registered(_process_queue):
         bpy.app.timers.register(_process_queue, persistent=True)
-    _SERVER = socketserver.TCPServer(("127.0.0.1", port), _BlenderRequestHandler)
+    _SERVER = _ReusableTCPServer(("127.0.0.1", port), _BlenderRequestHandler)
     thread = threading.Thread(target=_SERVER.serve_forever, daemon=True)
     thread.start()
     print(f"Portal Blender command server started on :{port}")

@@ -6,6 +6,15 @@ from pathlib import Path
 
 import sys
 
+UNIT_TO_METERS = {
+    "mm": 0.001,
+    "cm": 0.01,
+    "m": 1.0,
+    "in": 0.0254,
+    "ft": 0.3048,
+    "yd": 0.9144,
+}
+
 def get_project_root() -> Path:
     if getattr(sys, 'frozen', False):
         return Path(sys._MEIPASS).resolve()
