@@ -185,7 +185,7 @@ class PortalWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(central)
         
         root = QtWidgets.QVBoxLayout(central)
-        root.setContentsMargins(18, 16, 18, 18)
+        root.setContentsMargins(18, 0, 18, 18)
         root.setSpacing(12)
 
         # Title Bar (Frameless dragging area)
@@ -223,22 +223,22 @@ class PortalWindow(QtWidgets.QMainWindow):
         title_lbl.setObjectName("TitleBarTitle")
         title_lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         
-        title_glow = QtWidgets.QGraphicsDropShadowEffect(title_lbl)
-        title_glow.setBlurRadius(15)
-        title_glow.setXOffset(0)
-        title_glow.setYOffset(0)
-        title_glow.setColor(QtGui.QColor(255, 255, 255, 120))
-        title_lbl.setGraphicsEffect(title_glow)
+        notch_shadow = QtWidgets.QGraphicsDropShadowEffect(title_lbl)
+        notch_shadow.setBlurRadius(100)
+        notch_shadow.setXOffset(0)
+        notch_shadow.setYOffset(3)
+        notch_shadow.setColor(QtGui.QColor(0, 0, 0, 80))
+        title_lbl.setGraphicsEffect(notch_shadow)
         
-        title_bar_layout.addWidget(self.close_dot)
-        title_bar_layout.addWidget(self.min_dot)
+        title_bar_layout.addWidget(self.close_dot, 0, QtCore.Qt.AlignmentFlag.AlignVCenter)
+        title_bar_layout.addWidget(self.min_dot, 0, QtCore.Qt.AlignmentFlag.AlignVCenter)
         title_bar_layout.addStretch(1)
-        title_bar_layout.addWidget(title_lbl)
+        title_bar_layout.addWidget(title_lbl, 0, QtCore.Qt.AlignmentFlag.AlignTop)
         title_bar_layout.addStretch(1)
         
         right_spacer = QtWidgets.QWidget()
         right_spacer.setFixedSize(32, 12)
-        title_bar_layout.addWidget(right_spacer)
+        title_bar_layout.addWidget(right_spacer, 0, QtCore.Qt.AlignmentFlag.AlignVCenter)
         
         root.addWidget(title_bar)
 

@@ -20,10 +20,14 @@ QWidget#TitleBar {
 }
 
 QLabel#TitleBarTitle {
-    color: #888888;
-    font-size: 12pt;
+    background-color: #1a1a1a;
+    color: #b0b0b0;
+    font-size: 11pt;
     font-weight: 700;
     letter-spacing: 2px;
+    padding: 6px 24px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 QPushButton#CloseDot {
@@ -63,7 +67,7 @@ QLabel#HeroSubtitle {
 
 QLabel#FlowDescription {
     color: #ffffff;
-    font-size: 9pt;
+    font-size: 10pt;
     font-weight: 600;
 }
 
