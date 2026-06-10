@@ -352,24 +352,21 @@ class MayaBridgeHost(BridgeHost):
         shape = shapes[0]
         
         try:
-            # Query smooth/hard properties for all edges (True = smooth, False = hard/sharp)
-            edge_states = cmds.polyEdge(shape + ".e[*]", query=True, l=True) or []
+            import maya.api.OpenMaya as om
+            selection_list = om.MSelectionList()
+            selection_list.add(shape)
+            dag_path = selection_list.getDagPath(0)
+            fn_mesh = om.MFnMesh(dag_path)
+            
+            num_edges = fn_mesh.numEdges
+            hard_edges = []
+            for i in range(num_edges):
+                if not fn_mesh.isEdgeSmooth(i):
+                    v1, v2 = fn_mesh.getEdgeVertices(i)
+                    hard_edges.append([int(v1), int(v2)])
+            return hard_edges
         except Exception:
             return []
-            
-        hard_edges = []
-        for index, is_smooth in enumerate(edge_states):
-            if not is_smooth:
-                try:
-                    info = cmds.polyInfo(f"{shape}.e[{index}]", edgeToVertex=True)[0]
-                    # Parse EDGE index: v1 v2
-                    tokens = info.split()
-                    v1 = int(tokens[2])
-                    v2 = int(tokens[3])
-                    hard_edges.append([v1, v2])
-                except Exception:
-                    continue
-        return hard_edges
  
     def _merge_previous_blender_metadata(self, records: list[MeshRecord], settings: BridgeSettings) -> None:
         previous_records: dict[str, MeshRecord] = {}

@@ -424,6 +424,23 @@ class BlenderBridgeHost(BridgeHost):
                 material = self._existing_material(manifest_material_names[index])
             replacement_slots.append(material)
 
+        # Build mapping from imported index to replacement index
+        mapping = {}
+        for imp_idx, imp_mat in enumerate(imported_materials):
+            if not imp_mat:
+                mapping[imp_idx] = 0
+                continue
+            imp_base = sanitize_name(self._base_blender_name(imp_mat.name))
+            matched_idx = None
+            for rep_idx, rep_mat in enumerate(replacement_slots):
+                if rep_mat and sanitize_name(self._base_blender_name(rep_mat.name)) == imp_base:
+                    matched_idx = rep_idx
+                    break
+            if matched_idx is not None:
+                mapping[imp_idx] = matched_idx
+            else:
+                mapping[imp_idx] = imp_idx if imp_idx < len(replacement_slots) else 0
+
         for slot in obj.material_slots:
             try:
                 slot.link = 'DATA'
@@ -437,6 +454,11 @@ class BlenderBridgeHost(BridgeHost):
             mesh_mats.pop(index=len(mesh_mats) - 1)
         for i, material in enumerate(replacement_slots):
             mesh_mats[i] = material
+
+        # Apply the mapping to the polygons
+        if hasattr(obj.data, "polygons"):
+            for poly in obj.data.polygons:
+                poly.material_index = mapping.get(poly.material_index, 0)
 
     def _deduplicate_materials(self, obj) -> None:
         for index, material in enumerate(list(obj.data.materials)):
@@ -503,21 +525,6 @@ class BlenderBridgeHost(BridgeHost):
     def _apply_sharp_edges(self, obj, sharp_edges: list[list[int]]) -> None:
         if obj.type != "MESH":
             return
-            
-        # Clear custom split normals to unlock the mesh shading
-        try:
-            if hasattr(obj.data, "clear_custom_normals"):
-                obj.data.clear_custom_normals()
-        except Exception:
-            pass
-            
-        # Set all polygons to smooth shading
-        try:
-            if hasattr(obj.data, "polygons"):
-                for poly in obj.data.polygons:
-                    poly.use_smooth = True
-        except Exception:
-            pass
 
         sharp_attribute = None
         if hasattr(obj.data, "attributes"):
@@ -534,6 +541,24 @@ class BlenderBridgeHost(BridgeHost):
                 edge.use_edge_sharp = is_sharp
             if sharp_attribute and edge.index < len(sharp_attribute.data):
                 sharp_attribute.data[edge.index].value = is_sharp
+        
+        # Enable Auto Smooth on older Blender versions (<4.1) or add Smooth by Angle modifier on newer versions (>=4.1)
+        if hasattr(obj.data, "use_auto_smooth"):
+            try:
+                obj.data.use_auto_smooth = True
+                obj.data.auto_smooth_angle = 3.14159
+            except Exception:
+                pass
+        else:
+            if sharp_edges:
+                try:
+                    has_mod = any(m.type == 'SMOOTH_BY_ANGLE' for m in obj.modifiers)
+                    if not has_mod:
+                        mod = obj.modifiers.new(name="Smooth by Angle", type='SMOOTH_BY_ANGLE')
+                        mod.angle = 3.14159
+                except Exception:
+                    pass
+
         obj.data.update()
 
     def _seam_edges(self, obj) -> list[list[int]]:
