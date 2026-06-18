@@ -10,7 +10,6 @@ from pathlib import Path
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from bridge_core.settings import PROJECT_ROOT
-from bridge_core.license_manager import check_license, verify_gumroad_license, get_hardware_id
 from .config import FluxConfig
 from .dcc_commands import blender_bootstrap_expr, bridge_action_code, maya_bootstrap_command
 from .styles import DARK_NEON_QSS
@@ -684,7 +683,7 @@ class AboutDialog(QtWidgets.QDialog):
         add_info_row("Version", "v1.0.0")
         add_info_row("Year", "2026")
         add_info_row("Developer", "Jaisurya C | Tech Art")
-        #add_info_row("License", "MIT License")
+        add_info_row("License", "MIT License")
         
         close_btn = QtWidgets.QPushButton("Close")
         close_btn.setObjectName("GhostBtn")
@@ -1132,107 +1131,15 @@ class FluxWindow(QtWidgets.QMainWindow):
         # 2. Main Stacked page views
         self.central_stack = QtWidgets.QStackedWidget()
         
-        self._build_license_page()
         self._build_terminal_page()
         self._build_config_page()
         
-        self.central_stack.addWidget(self.license_page)
         self.central_stack.addWidget(self.terminal_page)
         self.central_stack.addWidget(self.config_page)
         
         root.addWidget(self.central_stack, 1)
 
-        is_activated = check_license(self.config.license_key, self.config.cached_hwid)
-        if is_activated:
-            self._show_terminal_page()
-        else:
-            self._show_license_page()
-
-    def _build_license_page(self) -> None:
-        self.license_page = QtWidgets.QWidget()
-        self.license_page.setSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
-        layout = QtWidgets.QVBoxLayout(self.license_page)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(10)
-
-        card = QtWidgets.QFrame()
-        card.setObjectName("ControlHubFrame")
-        card_layout = QtWidgets.QVBoxLayout(card)
-        card_layout.setContentsMargins(18, 18, 18, 18)
-        card_layout.setSpacing(12)
-
-        title = QtWidgets.QLabel("Product Activation")
-        title.setStyleSheet("color: #ffffff; font-size: 11pt; font-weight: 700;")
-        title.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        
-        info = QtWidgets.QLabel(
-            "Flux Indie license allows validation on up to 2 creative systems.\n"
-            "Please enter the product license key from your Gumroad purchase receipt."
-        )
-        info.setStyleSheet("color: #888888; font-size: 8.5pt; line-height: 1.4;")
-        info.setWordWrap(True)
-        info.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-
-        self.license_input = QtWidgets.QLineEdit()
-        self.license_input.setPlaceholderText("Paste your license key here (e.g. XXXX-XXXX-...)")
-        self.license_input.setMinimumHeight(32)
-        
-        self.activate_btn = self._button("Activate License", self._on_activate_clicked, primary=True)
-        self.activate_btn.setMinimumHeight(36)
-
-        self.license_status = QtWidgets.QLabel("")
-        self.license_status.setStyleSheet("font-size: 8.5pt; font-weight: 600; color: #ef4444;")
-        self.license_status.setWordWrap(True)
-        self.license_status.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-
-        buy_lbl = QtWidgets.QLabel(
-            "<a href='https://gumroad.com' style='color: #2563eb; text-decoration: none; font-weight: 600;'>Buy Flux License on Gumroad</a>"
-        )
-        buy_lbl.setOpenExternalLinks(True)
-        buy_lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        buy_lbl.setStyleSheet("font-size: 8.5pt;")
-
-        card_layout.addWidget(title)
-        card_layout.addWidget(info)
-        card_layout.addWidget(self.license_input)
-        card_layout.addWidget(self.activate_btn)
-        card_layout.addWidget(self.license_status)
-        card_layout.addWidget(buy_lbl)
-
-        layout.addWidget(card)
-        layout.addStretch(1)
-
-    def _on_activate_clicked(self) -> None:
-        key = self.license_input.text().strip()
-        if not key:
-            self.license_status.setStyleSheet("font-size: 8.5pt; font-weight: 600; color: #ef4444;")
-            self.license_status.setText("License key cannot be empty.")
-            return
-            
-        self.activate_btn.setEnabled(False)
-        self.activate_btn.setText("Verifying...")
-        self.license_status.setStyleSheet("font-size: 8.5pt; font-weight: 600; color: #a3a3a3;")
-        self.license_status.setText("Contacting verification server...")
-        
-        QtCore.QTimer.singleShot(100, lambda: self._process_activation(key))
-        
-    def _process_activation(self, key: str) -> None:
-        res = verify_gumroad_license(self.config.product_id, key)
-        self.activate_btn.setEnabled(True)
-        self.activate_btn.setText("Activate License")
-        
-        if res.get("success"):
-            self.config.license_key = key
-            self.config.cached_hwid = get_hardware_id()
-            self.config.save()
-            
-            self.license_status.setStyleSheet("font-size: 8.5pt; font-weight: 600; color: #10b981;")
-            self.license_status.setText("Activation successful!")
-            
-            QtCore.QTimer.singleShot(800, self._show_terminal_page)
-        else:
-            self.license_status.setStyleSheet("font-size: 8.5pt; font-weight: 600; color: #ef4444;")
-            self.license_status.setText(res.get("message", "Validation failed."))
+        self._show_terminal_page()
 
     def show_about_dialog(self) -> None:
         dialog = AboutDialog(self)
@@ -1268,29 +1175,18 @@ class FluxWindow(QtWidgets.QMainWindow):
         return header_layout
 
     def _show_terminal_page(self) -> None:
-        if not check_license(self.config.license_key, self.config.cached_hwid):
-            self._show_license_page()
-            return
         self.nav_terminal_btn.set_active(True)
         self.nav_settings_btn.set_active(False)
         self.nav_terminal_btn.setVisible(True)
         self.nav_settings_btn.setVisible(True)
-        self._fade_switch_page(1)
+        self._fade_switch_page(0)
         
     def _show_settings_page(self) -> None:
-        if not check_license(self.config.license_key, self.config.cached_hwid):
-            self._show_license_page()
-            return
         self.nav_terminal_btn.set_active(False)
         self.nav_settings_btn.set_active(True)
         self.nav_terminal_btn.setVisible(True)
         self.nav_settings_btn.setVisible(True)
-        self._fade_switch_page(2)
-
-    def _show_license_page(self) -> None:
-        self.nav_terminal_btn.setVisible(False)
-        self.nav_settings_btn.setVisible(False)
-        self._fade_switch_page(0)
+        self._fade_switch_page(1)
         
     def _refresh_nav_styles(self) -> None:
         pass

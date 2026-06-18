@@ -1,10 +1,7 @@
 {
   "blender_exe": "C:\\Program Files\\Blender Foundation\\Blender 4.5\\blender.exe",
   "blender_port": 7722,
-  "cached_hwid": "",
   "exchange_dir": "{PROJECT_ROOT}/exchange",
-  "license_key": "",
   "maya_exe": "C:/Program Files/Autodesk/Maya2023/bin/maya.exe",
-  "maya_port": 7821,
-  "product_id": "jl2DUztnChWHzIAypmZl3A=="
+  "maya_port": 7821
 }

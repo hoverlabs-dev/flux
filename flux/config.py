@@ -24,9 +24,6 @@ class FluxConfig:
     exchange_dir: str = str(DEFAULT_EXCHANGE_DIR)
     maya_port: int = MAYA_SOCKET_PORT
     blender_port: int = 7722
-    license_key: str = ""
-    cached_hwid: str = ""
-    product_id: str = "jl2DUztnChWHzIAypmZl3A=="
 
     @classmethod
     def load(cls) -> "FluxConfig":
