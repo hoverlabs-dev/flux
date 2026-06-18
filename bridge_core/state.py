@@ -8,7 +8,7 @@ from .naming import HOST_TARGETS
 from .settings import BridgeSettings
 
 
-@dataclass(slots=True)
+@dataclass
 class TransferState:
     source_host: str
     target_host: str

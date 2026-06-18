@@ -36,7 +36,8 @@ def _runtime_path() -> Path:
 
 def _can_import_pyqt6() -> bool:
     try:
-        importlib.import_module("PyQt6")
+        importlib.import_module("PyQt6.QtCore")
         return True
     except Exception:
         return False
+

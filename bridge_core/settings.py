@@ -17,7 +17,9 @@ UNIT_TO_METERS = {
 
 def get_project_root() -> Path:
     if getattr(sys, 'frozen', False):
-        return Path(sys._MEIPASS).resolve()
+        if hasattr(sys, '_MEIPASS'):
+            return Path(sys._MEIPASS).resolve()
+        return Path(sys.executable).parent.resolve()
     return Path(__file__).resolve().parents[1]
 
 PROJECT_ROOT = get_project_root()
@@ -28,10 +30,10 @@ def get_default_exchange_dir() -> Path:
     return PROJECT_ROOT / "exchange"
 
 DEFAULT_EXCHANGE_DIR = get_default_exchange_dir()
-DEFAULT_FBX_PATH = DEFAULT_EXCHANGE_DIR / "bridge_transfer.fbx"
+DEFAULT_FBX_PATH = DEFAULT_EXCHANGE_DIR / "flux_transfer.fbx"
 
 
-@dataclass(slots=True)
+@dataclass
 class BridgeSettings:
     """Transfer settings shared by Maya and Blender host adapters."""
 
@@ -52,7 +54,7 @@ class BridgeSettings:
 
     @property
     def manifest_path(self) -> Path:
-        return self.fbx_path.with_suffix(".bridge_manifest.json")
+        return self.fbx_path.with_suffix(".flux_manifest.json")
 
     def ensure_exchange_dir(self) -> None:
         self.fbx_path.parent.mkdir(parents=True, exist_ok=True)

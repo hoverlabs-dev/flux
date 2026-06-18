@@ -9,7 +9,7 @@ from typing import Any
 SCHEMA_VERSION = 1
 
 
-@dataclass(slots=True)
+@dataclass
 class MeshRecord:
     name: str
     host_name: str
@@ -26,7 +26,7 @@ class MeshRecord:
     custom_properties: dict[str, Any] = field(default_factory=dict)
 
 
-@dataclass(slots=True)
+@dataclass
 class BridgeManifest:
     source_host: str
     source_version: str

@@ -1,0 +1,2 @@
+"""Standalone Flux application package."""
+

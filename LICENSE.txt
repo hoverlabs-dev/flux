@@ -1,0 +1,34 @@
+END USER LICENSE AGREEMENT (EULA)
+Last Updated: June 11, 2026
+
+PLEASE READ THIS END USER LICENSE AGREEMENT ("AGREEMENT") CAREFULLY BEFORE INSTALLING OR USING THE "FLUX" SOFTWARE APPLICATION ("SOFTWARE"). BY DOWNLOADING, INSTALLING, OR USING THE SOFTWARE, YOU AGREE TO BE BOUND BY THE TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU DO NOT AGREE, DO NOT INSTALL OR USE THE SOFTWARE.
+
+1. LICENSE GRANT
+hoverLabs grants you a non-exclusive, non-transferable, limited license to install and use the Software on up to two (2) personal computer systems owned or controlled by you (the "Indie License"), solely for your internal development, production, and creative workflows.
+
+2. RESTRICTIONS
+You shall not, and shall not permit any third party to:
+a. Copy, distribute, rent, lease, sublicense, or otherwise transfer rights to the Software.
+b. Modify, translate, reverse engineer, decompile, disassemble, or attempt to derive the source code of the Software.
+c. Bypass, modify, or disable any digital rights management or licensing system integrated into the Software.
+d. Use the Software on more than two (2) computer systems concurrently.
+
+3. INTELLECTUAL PROPERTY & OWNERSHIP
+All title, ownership rights, and intellectual property rights in and to the Software (including but not limited to code, designs, branding, logos, and UI elements) are owned exclusively by hoverLabs. The Software is protected by copyright laws and international treaty provisions.
+
+4. SYSTEM VERIFICATION & DATA USE
+To enforce license activation limits, the Software generates a hardware identification hash (HWID) based on your system parameters. This hash is validated against validation servers. No personally identifiable information is collected or transmitted during this check.
+
+5. TERMINATION
+This license is effective until terminated. Your rights under this Agreement will terminate automatically without notice from hoverLabs if you fail to comply with any term(s) of this Agreement. Upon termination, you must cease all use of the Software and destroy all copies in your possession.
+
+6. DISCLAIMER OF WARRANTIES
+THE SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS. TO THE MAXIMUM EXTENT PERMITTED BY LAW, HOVERLABS DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+7. LIMITATION OF LIABILITY
+IN NO EVENT SHALL HOVERLABS BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING DAMAGES FOR LOSS OF PROFITS, BUSINESS INTERRUPTION, OR LOSS OF DATA) ARISING OUT OF OR IN ANY WAY RELATED TO THE USE OF OR INABILITY TO USE THE SOFTWARE.
+
+8. GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of your jurisdiction, excluding its conflicts of law rules.
+
+If you have any questions regarding this EULA, please contact hoverLabs support.

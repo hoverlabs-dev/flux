@@ -116,14 +116,14 @@ def main():
     </head>
     <body>
 
-    <h1>Portal: Maya &harr; Blender Asset Bridge</h1>
+    <h1>Flux: Maya &harr; Blender Asset Bridge</h1>
     <div class="subtitle">Developed by Jaisurya C &bull; Quick Artist Reference Guide &bull; Bi-directional Mesh Transfer Tool</div>
 
     <div class="card">
         <span class="accent">⚡ Quick Start Connection:</span>
         <ol>
             <li>Copy this folder into your local</li>
-            <li>Launch the Portal application using <code>portal.exe</code>.</li>
+            <li>Launch the Flux application using <code>flux.exe</code>.</li>
             <li>Click <b>Launch Maya</b> and <b>Launch Blender</b> from the main page to open your editors.</li>
             <li>The connection starts automatically in the background—no manual script setup is required!</li>
         </ol>
@@ -132,7 +132,7 @@ def main():
     <h2>🚀 Transferring Assets Step-by-Step</h2>
 
     <div style="margin-bottom: 12px;">
-        <p><span class="step-num">1</span> <b>Choose Flow Direction:</b> Inside the Portal's main page, select either:</p>
+        <p><span class="step-num">1</span> <b>Choose Flow Direction:</b> Inside the Flux's main page, select either:</p>
         <ul>
             <li><span style="color:#2563eb; font-weight:700;">Maya ➔ Blender</span> (transfers selection from Maya into Blender)</li>
             <li><span style="color:#d97706; font-weight:700;">Blender ➔ Maya</span> (transfers selection from Blender into Maya)</li>
@@ -144,7 +144,7 @@ def main():
     </div>
 
     <div style="margin-bottom: 12px;">
-        <p><span class="step-num">3</span> <b>Roundtrip Sync:</b> Press the large blue <b>ROUNDTRIP SYNC</b> button in the Portal dashboard. The meshes will export and instantly load into the target application.</p>
+        <p><span class="step-num">3</span> <b>Roundtrip Sync:</b> Press the large blue <b>ROUNDTRIP SYNC</b> button in the Flux dashboard. The meshes will export and instantly load into the target application.</p>
     </div>
 
     <div class="footer">
@@ -157,7 +157,7 @@ def main():
     
     doc.setHtml(html_content)
     
-    output_path = Path(__file__).resolve().parents[1] / "dist" / "Portal_Artist_Guide.pdf"
+    output_path = Path(__file__).resolve().parents[1] / "dist" / "Flux_Artist_Guide.pdf"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     writer = QPdfWriter(str(output_path))

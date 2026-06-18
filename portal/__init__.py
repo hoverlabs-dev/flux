@@ -1,2 +1,0 @@
-"""Standalone Portal application package."""
-

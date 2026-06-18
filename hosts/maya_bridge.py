@@ -119,7 +119,7 @@ class MayaBridgeHost(BridgeHost):
             try:
                 for orig_node, dup_node in orig_to_dup.items():
                     leaf_name = orig_node.split("|")[-1]
-                    temp_name = leaf_name + "_tmp_portal_rename"
+                    temp_name = leaf_name + "_tmp_flux_rename"
                     
                     orig_new_path = orig_node
                     try:
@@ -389,7 +389,7 @@ class MayaBridgeHost(BridgeHost):
  
     def _merge_previous_blender_metadata(self, records: list[MeshRecord], settings: BridgeSettings) -> None:
         previous_records: dict[str, MeshRecord] = {}
-        for manifest_path in sorted(settings.fbx_path.parent.glob("*.bridge_manifest.json")):
+        for manifest_path in sorted(settings.fbx_path.parent.glob("*.flux_manifest.json")):
             try:
                 manifest = BridgeManifest.read(manifest_path)
             except Exception:
