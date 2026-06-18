@@ -16,8 +16,7 @@ By utilizing a sidecar metadata manifest workflow, Flux bypasses traditional FBX
   - **Pivots & Local Transforms**: Tracks scale/rotate pivots in Maya and object origins in Blender using dynamic coordinates.
   - **Vertex Groups & Weights**: Retains and restores custom vertex weights/groups on import.
   - **Viewport Edge Hardness**: Edge crease weightings and hard/soft viewport shading boundaries are translated perfectly.
-- **Premium Dark Neon UI**: A responsive, modern obsidian-glass design styled with PyQt6 custom widgets, micro-animations, and glow graphics.
-- **Activity Console**: Real-time validation logs and subprocess trackers directly inside the launcher.
+  - **Activity Console**: Real-time validation logs and subprocess trackers directly inside the launcher.
 
 ---
 
