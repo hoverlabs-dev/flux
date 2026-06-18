@@ -1,5 +1,8 @@
 # Flux - Professional Maya ↔ Blender Asset Pipeline (FBX)
 
+<img width="800" height="450" alt="flux" src="https://github.com/user-attachments/assets/ae64dbee-fcdb-4edf-92ac-bd8be7d09889" />
+
+
 Flux is a high-performance standalone desktop utility and launchpad designed for professional 3D artists, game developers, and technical directors. It facilitates seamless, loss-free, single-click asset transfers between Autodesk Maya and Blender.
 
 By utilizing a sidecar metadata manifest workflow, Flux bypasses traditional FBX format limitations, preserving and mapping critical DCC parameters perfectly across both hosts.
